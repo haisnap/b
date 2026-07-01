@@ -44,12 +44,12 @@ jobs:
 
       - name: Sync static files to Volcengine TOS
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.VOLCENGINE_TOS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.VOLCENGINE_TOS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.VOLCENGINE_TOS_ACCESS_KEY_ID || secrets.VOLCENGINE_ACCESS_KEY_ID || secrets.TOS_ACCESS_KEY_ID || secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.VOLCENGINE_TOS_SECRET_ACCESS_KEY || secrets.VOLCENGINE_SECRET_ACCESS_KEY || secrets.TOS_SECRET_ACCESS_KEY || secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_EC2_METADATA_DISABLED: "true"
-          AWS_DEFAULT_REGION: ${{ secrets.VOLCENGINE_TOS_REGION }}
-          VOLCENGINE_TOS_BUCKET: ${{ secrets.VOLCENGINE_TOS_BUCKET }}
-          VOLCENGINE_TOS_ENDPOINT: ${{ secrets.VOLCENGINE_TOS_ENDPOINT }}
+          AWS_DEFAULT_REGION: ${{ secrets.VOLCENGINE_TOS_REGION || secrets.VOLCENGINE_REGION || secrets.TOS_REGION || secrets.AWS_DEFAULT_REGION }}
+          VOLCENGINE_TOS_BUCKET: ${{ secrets.VOLCENGINE_TOS_BUCKET || secrets.VOLCENGINE_BUCKET || secrets.TOS_BUCKET }}
+          VOLCENGINE_TOS_ENDPOINT: ${{ secrets.VOLCENGINE_TOS_ENDPOINT || secrets.TOS_ENDPOINT }}
           VOLCENGINE_TOS_PREFIX: ${{ secrets.VOLCENGINE_TOS_PREFIX }}
           VOLCENGINE_TOS_ACL: ${{ secrets.VOLCENGINE_TOS_ACL }}
         run: |
