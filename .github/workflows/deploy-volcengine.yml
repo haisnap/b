@@ -1,0 +1,95 @@
+name: Deploy to Volcengine TOS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-volcengine
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      VOLCENGINE_CDN_REFRESH_WEBHOOK: ${{ secrets.VOLCENGINE_CDN_REFRESH_WEBHOOK }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Ensure AWS CLI
+        run: |
+          if ! command -v aws >/dev/null 2>&1; then
+            python3 -m pip install --user awscli
+            echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          fi
+
+      - name: Sync static files to Volcengine TOS
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.VOLCENGINE_TOS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.VOLCENGINE_TOS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: "true"
+          AWS_DEFAULT_REGION: ${{ secrets.VOLCENGINE_TOS_REGION }}
+          VOLCENGINE_TOS_BUCKET: ${{ secrets.VOLCENGINE_TOS_BUCKET }}
+          VOLCENGINE_TOS_ENDPOINT: ${{ secrets.VOLCENGINE_TOS_ENDPOINT }}
+          VOLCENGINE_TOS_PREFIX: ${{ secrets.VOLCENGINE_TOS_PREFIX }}
+          VOLCENGINE_TOS_ACL: ${{ secrets.VOLCENGINE_TOS_ACL }}
+        run: |
+          set -euo pipefail
+
+          : "${AWS_ACCESS_KEY_ID:?Missing VOLCENGINE_TOS_ACCESS_KEY_ID secret}"
+          : "${AWS_SECRET_ACCESS_KEY:?Missing VOLCENGINE_TOS_SECRET_ACCESS_KEY secret}"
+          : "${AWS_DEFAULT_REGION:?Missing VOLCENGINE_TOS_REGION secret}"
+          : "${VOLCENGINE_TOS_BUCKET:?Missing VOLCENGINE_TOS_BUCKET secret}"
+          : "${VOLCENGINE_TOS_ENDPOINT:?Missing VOLCENGINE_TOS_ENDPOINT secret}"
+
+          destination="s3://${VOLCENGINE_TOS_BUCKET}"
+          if [ -n "${VOLCENGINE_TOS_PREFIX:-}" ]; then
+            destination="${destination%/}/${VOLCENGINE_TOS_PREFIX#/}"
+          fi
+
+          acl_args=()
+          if [ -n "${VOLCENGINE_TOS_ACL:-}" ]; then
+            acl_args=(--acl "${VOLCENGINE_TOS_ACL}")
+          fi
+
+          aws s3 sync out/ "$destination" \
+            --endpoint-url "$VOLCENGINE_TOS_ENDPOINT" \
+            --delete \
+            --cache-control "public,max-age=300" \
+            "${acl_args[@]}"
+
+      - name: Optional CDN refresh hook
+        if: ${{ env.VOLCENGINE_CDN_REFRESH_WEBHOOK != '' }}
+        env:
+          VOLCENGINE_CDN_REFRESH_TOKEN: ${{ secrets.VOLCENGINE_CDN_REFRESH_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          auth_args=()
+          if [ -n "${VOLCENGINE_CDN_REFRESH_TOKEN:-}" ]; then
+            auth_args=(-H "Authorization: Bearer ${VOLCENGINE_CDN_REFRESH_TOKEN}")
+          fi
+
+          curl -fsS -X POST "${VOLCENGINE_CDN_REFRESH_WEBHOOK}" \
+            "${auth_args[@]}" \
+            -H "Content-Type: application/json" \
+            --data '{"site":"https://b.haisnap.com/","paths":["https://b.haisnap.com/","https://b.haisnap.com/bank/","https://b.haisnap.com/robots.txt","https://b.haisnap.com/sitemap.xml"]}'
