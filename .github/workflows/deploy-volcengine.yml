@@ -18,6 +18,26 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VOLCENGINE_CDN_REFRESH_WEBHOOK: ${{ secrets.VOLCENGINE_CDN_REFRESH_WEBHOOK }}
+      VOLCENGINE_TOS_ACCESS_KEY_ID: ${{ secrets.VOLCENGINE_TOS_ACCESS_KEY_ID }}
+      VOLCENGINE_ACCESS_KEY_ID: ${{ secrets.VOLCENGINE_ACCESS_KEY_ID }}
+      TOS_ACCESS_KEY_ID: ${{ secrets.TOS_ACCESS_KEY_ID }}
+      AWS_ACCESS_KEY_ID_SECRET: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      VOLCENGINE_TOS_SECRET_ACCESS_KEY: ${{ secrets.VOLCENGINE_TOS_SECRET_ACCESS_KEY }}
+      VOLCENGINE_SECRET_ACCESS_KEY: ${{ secrets.VOLCENGINE_SECRET_ACCESS_KEY }}
+      TOS_SECRET_ACCESS_KEY: ${{ secrets.TOS_SECRET_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_EC2_METADATA_DISABLED: "true"
+      VOLCENGINE_TOS_REGION: ${{ secrets.VOLCENGINE_TOS_REGION }}
+      VOLCENGINE_REGION: ${{ secrets.VOLCENGINE_REGION }}
+      TOS_REGION: ${{ secrets.TOS_REGION }}
+      AWS_DEFAULT_REGION_SECRET: ${{ secrets.AWS_DEFAULT_REGION }}
+      VOLCENGINE_TOS_BUCKET_SECRET: ${{ secrets.VOLCENGINE_TOS_BUCKET }}
+      VOLCENGINE_BUCKET: ${{ secrets.VOLCENGINE_BUCKET }}
+      TOS_BUCKET: ${{ secrets.TOS_BUCKET }}
+      VOLCENGINE_TOS_ENDPOINT_SECRET: ${{ secrets.VOLCENGINE_TOS_ENDPOINT }}
+      TOS_ENDPOINT: ${{ secrets.TOS_ENDPOINT }}
+      VOLCENGINE_TOS_PREFIX: ${{ secrets.VOLCENGINE_TOS_PREFIX }}
+      VOLCENGINE_TOS_ACL: ${{ secrets.VOLCENGINE_TOS_ACL }}
 
     steps:
       - name: Checkout
@@ -42,28 +62,52 @@ jobs:
             echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           fi
 
+      - name: Check TOS access key secret
+        run: |
+          set -euo pipefail
+
+          if [ -z "${VOLCENGINE_TOS_ACCESS_KEY_ID:-${VOLCENGINE_ACCESS_KEY_ID:-${TOS_ACCESS_KEY_ID:-${AWS_ACCESS_KEY_ID_SECRET:-}}}}" ]; then
+            echo "Missing one of: VOLCENGINE_TOS_ACCESS_KEY_ID, VOLCENGINE_ACCESS_KEY_ID, TOS_ACCESS_KEY_ID, AWS_ACCESS_KEY_ID"
+            exit 1
+          fi
+
+      - name: Check TOS secret access key
+        run: |
+          set -euo pipefail
+
+          if [ -z "${VOLCENGINE_TOS_SECRET_ACCESS_KEY:-${VOLCENGINE_SECRET_ACCESS_KEY:-${TOS_SECRET_ACCESS_KEY:-${AWS_SECRET_ACCESS_KEY_SECRET:-}}}}" ]; then
+            echo "Missing one of: VOLCENGINE_TOS_SECRET_ACCESS_KEY, VOLCENGINE_SECRET_ACCESS_KEY, TOS_SECRET_ACCESS_KEY, AWS_SECRET_ACCESS_KEY"
+            exit 1
+          fi
+
+      - name: Check TOS region secret
+        run: |
+          set -euo pipefail
+
+          if [ -z "${VOLCENGINE_TOS_REGION:-${VOLCENGINE_REGION:-${TOS_REGION:-${AWS_DEFAULT_REGION_SECRET:-}}}}" ]; then
+            echo "Missing one of: VOLCENGINE_TOS_REGION, VOLCENGINE_REGION, TOS_REGION, AWS_DEFAULT_REGION"
+            exit 1
+          fi
+
+      - name: Check TOS bucket secret
+        run: |
+          set -euo pipefail
+
+          if [ -z "${VOLCENGINE_TOS_BUCKET_SECRET:-${VOLCENGINE_BUCKET:-${TOS_BUCKET:-}}}" ]; then
+            echo "Missing one of: VOLCENGINE_TOS_BUCKET, VOLCENGINE_BUCKET, TOS_BUCKET"
+            exit 1
+          fi
+
+      - name: Check TOS endpoint secret
+        run: |
+          set -euo pipefail
+
+          if [ -z "${VOLCENGINE_TOS_ENDPOINT_SECRET:-${TOS_ENDPOINT:-}}" ]; then
+            echo "Missing one of: VOLCENGINE_TOS_ENDPOINT, TOS_ENDPOINT"
+            exit 1
+          fi
+
       - name: Sync static files to Volcengine TOS
-        env:
-          VOLCENGINE_TOS_ACCESS_KEY_ID: ${{ secrets.VOLCENGINE_TOS_ACCESS_KEY_ID }}
-          VOLCENGINE_ACCESS_KEY_ID: ${{ secrets.VOLCENGINE_ACCESS_KEY_ID }}
-          TOS_ACCESS_KEY_ID: ${{ secrets.TOS_ACCESS_KEY_ID }}
-          AWS_ACCESS_KEY_ID_SECRET: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          VOLCENGINE_TOS_SECRET_ACCESS_KEY: ${{ secrets.VOLCENGINE_TOS_SECRET_ACCESS_KEY }}
-          VOLCENGINE_SECRET_ACCESS_KEY: ${{ secrets.VOLCENGINE_SECRET_ACCESS_KEY }}
-          TOS_SECRET_ACCESS_KEY: ${{ secrets.TOS_SECRET_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_EC2_METADATA_DISABLED: "true"
-          VOLCENGINE_TOS_REGION: ${{ secrets.VOLCENGINE_TOS_REGION }}
-          VOLCENGINE_REGION: ${{ secrets.VOLCENGINE_REGION }}
-          TOS_REGION: ${{ secrets.TOS_REGION }}
-          AWS_DEFAULT_REGION_SECRET: ${{ secrets.AWS_DEFAULT_REGION }}
-          VOLCENGINE_TOS_BUCKET_SECRET: ${{ secrets.VOLCENGINE_TOS_BUCKET }}
-          VOLCENGINE_BUCKET: ${{ secrets.VOLCENGINE_BUCKET }}
-          TOS_BUCKET: ${{ secrets.TOS_BUCKET }}
-          VOLCENGINE_TOS_ENDPOINT_SECRET: ${{ secrets.VOLCENGINE_TOS_ENDPOINT }}
-          TOS_ENDPOINT: ${{ secrets.TOS_ENDPOINT }}
-          VOLCENGINE_TOS_PREFIX: ${{ secrets.VOLCENGINE_TOS_PREFIX }}
-          VOLCENGINE_TOS_ACL: ${{ secrets.VOLCENGINE_TOS_ACL }}
         run: |
           set -euo pipefail
 
