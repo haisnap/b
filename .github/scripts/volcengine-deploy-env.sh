@@ -31,7 +31,17 @@ resolve_volcengine_deploy_env() {
     "${VOLCENGINE_TOS_AK:-}" \
     "${VOLCENGINE_AK:-}" \
     "${VOLC_AK:-}" \
-    "${TOS_AK:-}")" || AWS_ACCESS_KEY_ID=""
+    "${TOS_AK:-}" \
+    "${VOLCENGINE_TOS_ACCESS_KEY_ID_VAR:-}" \
+    "${VOLCENGINE_TOS_ACCESS_KEY_VAR:-}" \
+    "${VOLCENGINE_ACCESS_KEY_ID_VAR:-}" \
+    "${VOLCENGINE_ACCESS_KEY_VAR:-}" \
+    "${VOLCENGINE_AK_VAR:-}" \
+    "${VOLC_AK_VAR:-}" \
+    "${TOS_AK_VAR:-}" \
+    "${ACCESS_KEY_ID_VAR:-}" \
+    "${AWS_ACCESS_KEY_ID_VAR:-}" \
+    "${AK_VAR:-}")" || AWS_ACCESS_KEY_ID=""
 
   AWS_SECRET_ACCESS_KEY="$(first_non_empty \
     "${VOLCENGINE_TOS_SECRET_ACCESS_KEY:-}" \
@@ -53,7 +63,18 @@ resolve_volcengine_deploy_env() {
     "${VOLCENGINE_TOS_SK:-}" \
     "${VOLCENGINE_SK:-}" \
     "${VOLC_SK:-}" \
-    "${TOS_SK:-}")" || AWS_SECRET_ACCESS_KEY=""
+    "${TOS_SK:-}" \
+    "${VOLCENGINE_TOS_SECRET_ACCESS_KEY_VAR:-}" \
+    "${VOLCENGINE_TOS_SECRET_KEY_VAR:-}" \
+    "${VOLCENGINE_SECRET_ACCESS_KEY_VAR:-}" \
+    "${VOLCENGINE_SECRET_KEY_VAR:-}" \
+    "${VOLCENGINE_SK_VAR:-}" \
+    "${VOLC_SK_VAR:-}" \
+    "${TOS_SK_VAR:-}" \
+    "${SECRET_ACCESS_KEY_VAR:-}" \
+    "${ACCESS_KEY_SECRET_VAR:-}" \
+    "${AWS_SECRET_ACCESS_KEY_VAR:-}" \
+    "${SK_VAR:-}")" || AWS_SECRET_ACCESS_KEY=""
 
   AWS_DEFAULT_REGION="$(first_non_empty \
     "${VOLCENGINE_TOS_REGION:-}" \
