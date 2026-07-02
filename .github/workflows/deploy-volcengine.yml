@@ -30,16 +30,19 @@ jobs:
       VOLCENGINE_ECS_DEPLOY_PATH: ${{ secrets.VOLCENGINE_ECS_DEPLOY_PATH }}
       VOLCENGINE_ECS_APP_PORT: ${{ secrets.VOLCENGINE_ECS_APP_PORT }}
       VOLCENGINE_ECS_SSH_KEY: ${{ secrets.VOLCENGINE_ECS_SSH_KEY }}
+      VOLCENGINE_ECS_SSH_KEY_B64: ${{ secrets.VOLCENGINE_ECS_SSH_KEY_B64 }}
       ECS_HOST: ${{ secrets.ECS_HOST }}
       ECS_USER: ${{ secrets.ECS_USER }}
       ECS_PORT: ${{ secrets.ECS_PORT }}
       ECS_DEPLOY_PATH: ${{ secrets.ECS_DEPLOY_PATH }}
       ECS_APP_PORT: ${{ secrets.ECS_APP_PORT }}
       ECS_SSH_KEY: ${{ secrets.ECS_SSH_KEY }}
+      ECS_SSH_KEY_B64: ${{ secrets.ECS_SSH_KEY_B64 }}
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_USER: ${{ secrets.SSH_USER }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_PRIVATE_KEY_B64: ${{ secrets.SSH_PRIVATE_KEY_B64 }}
 
     steps:
       - name: Checkout
@@ -88,9 +91,10 @@ jobs:
           ECS_DEPLOY_PATH_RESOLVED="$(first_non_empty "${VOLCENGINE_ECS_DEPLOY_PATH:-}" "${ECS_DEPLOY_PATH:-}" "${DEFAULT_DEPLOY_PATH:-}")"
           ECS_APP_PORT_RESOLVED="$(first_non_empty "${VOLCENGINE_ECS_APP_PORT:-}" "${ECS_APP_PORT:-}" "${DEFAULT_APP_PORT:-}")"
           ECS_SSH_KEY_RESOLVED="$(first_non_empty "${VOLCENGINE_ECS_SSH_KEY:-}" "${ECS_SSH_KEY:-}" "${SSH_PRIVATE_KEY:-}")" || ECS_SSH_KEY_RESOLVED=""
+          ECS_SSH_KEY_B64_RESOLVED="$(first_non_empty "${VOLCENGINE_ECS_SSH_KEY_B64:-}" "${ECS_SSH_KEY_B64:-}" "${SSH_PRIVATE_KEY_B64:-}")" || ECS_SSH_KEY_B64_RESOLVED=""
 
-          if [ -z "$ECS_SSH_KEY_RESOLVED" ]; then
-            echo "::error title=Missing ECS SSH key::Add VOLCENGINE_ECS_SSH_KEY, ECS_SSH_KEY, or SSH_PRIVATE_KEY in GitHub repository secrets."
+          if [ -z "$ECS_SSH_KEY_RESOLVED" ] && [ -z "$ECS_SSH_KEY_B64_RESOLVED" ]; then
+            echo "::error title=Missing ECS SSH key::Add VOLCENGINE_ECS_SSH_KEY_B64, VOLCENGINE_ECS_SSH_KEY, ECS_SSH_KEY, or SSH_PRIVATE_KEY in GitHub repository secrets."
             exit 1
           fi
 
@@ -103,10 +107,37 @@ jobs:
           } >> "$GITHUB_ENV"
 
           install -m 700 -d ~/.ssh
-          printf '%b\n' "$ECS_SSH_KEY_RESOLVED" | tr -d '\r' > ~/.ssh/volcengine_ecs_key
-          chmod 600 ~/.ssh/volcengine_ecs_key
-          if ! ssh-keygen -y -f ~/.ssh/volcengine_ecs_key >/dev/null 2>&1; then
-            echo "::error title=Invalid ECS SSH key::The ECS SSH key secret could not be parsed. Re-copy the full private key, including BEGIN and END lines."
+
+          write_raw_key() {
+            printf '%b\n' "$1" | tr -d '\r' > ~/.ssh/volcengine_ecs_key
+          }
+
+          write_base64_key() {
+            printf '%s' "$1" | tr -d '\r\n ' | base64 -d > ~/.ssh/volcengine_ecs_key 2>/dev/null
+          }
+
+          key_is_valid() {
+            chmod 600 ~/.ssh/volcengine_ecs_key
+            ssh-keygen -y -f ~/.ssh/volcengine_ecs_key >/dev/null 2>&1
+          }
+
+          key_ok=0
+          if [ -n "$ECS_SSH_KEY_B64_RESOLVED" ]; then
+            if write_base64_key "$ECS_SSH_KEY_B64_RESOLVED" && key_is_valid; then
+              key_ok=1
+            fi
+          fi
+
+          if [ "$key_ok" -ne 1 ] && [ -n "$ECS_SSH_KEY_RESOLVED" ]; then
+            if write_raw_key "$ECS_SSH_KEY_RESOLVED" && key_is_valid; then
+              key_ok=1
+            elif write_base64_key "$ECS_SSH_KEY_RESOLVED" && key_is_valid; then
+              key_ok=1
+            fi
+          fi
+
+          if [ "$key_ok" -ne 1 ]; then
+            echo "::error title=Invalid ECS SSH key::The ECS SSH key secret could not be parsed. Prefer VOLCENGINE_ECS_SSH_KEY_B64 with base64 content, or re-copy the full private key including BEGIN and END lines."
             exit 1
           fi
           ssh-keyscan -p "$ECS_PORT_RESOLVED" -H "$ECS_HOST_RESOLVED" >> ~/.ssh/known_hosts
