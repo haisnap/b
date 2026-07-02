@@ -199,11 +199,28 @@ jobs:
             acl_args=(--acl "${VOLCENGINE_TOS_ACL}")
           fi
 
-          aws s3 sync out/ "$destination" \
+          aws configure set default.s3.addressing_style path
+
+          set +e
+          sync_output="$(
+            aws s3 sync out/ "$destination" \
             --endpoint-url "$VOLCENGINE_TOS_ENDPOINT_RESOLVED" \
             --delete \
             --cache-control "public,max-age=300" \
-            "${acl_args[@]}"
+            "${acl_args[@]}" 2>&1
+          )"
+          sync_status=$?
+          set -e
+
+          if [ "$sync_status" -ne 0 ]; then
+            safe_output="${sync_output//$AWS_ACCESS_KEY_ID/***}"
+            safe_output="${safe_output//$AWS_SECRET_ACCESS_KEY/***}"
+            safe_output="${safe_output//$VOLCENGINE_TOS_ENDPOINT_RESOLVED/[TOS_ENDPOINT]}"
+            safe_output="${safe_output//$VOLCENGINE_TOS_BUCKET_RESOLVED/[TOS_BUCKET]}"
+            safe_output="${safe_output//$'\n'/ }"
+            echo "::error title=Volcengine TOS sync failed::${safe_output}"
+            exit "$sync_status"
+          fi
 
       - name: Optional CDN refresh hook
         if: ${{ env.VOLCENGINE_CDN_REFRESH_WEBHOOK != '' }}
