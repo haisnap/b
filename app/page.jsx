@@ -166,7 +166,6 @@ export default function HomePage() {
         <section className="hero home-hero" aria-labelledby="hero-title">
           <div className="hero-inner">
             <div className="hero-copy">
-              <p className="eyebrow">响指 AI · 企业服务合作</p>
               <h1 id="hero-title">把企业客户的 AI 需求，变成可交付项目</h1>
               <p className="hero-lead">
                 如果你有企业客户资源、渠道资源或培训咨询资源，响指可以补上平台、方案、售前、Demo 和交付支持。你负责客户关系，我们一起把客户的 AI 想法变成试点项目。
@@ -179,11 +178,6 @@ export default function HomePage() {
                   查看可合作项目
                 </a>
               </div>
-              <ul className="hero-guardrails" aria-label="合作边界">
-                <li>不卖加盟</li>
-                <li>不要求自建技术团队</li>
-                <li>先做小场景试点</li>
-              </ul>
             </div>
 
             <div className="hero-product" aria-label="响指企业 AI 服务合作工作台示意">
