@@ -111,10 +111,25 @@ jobs:
         run: |
           set -euo pipefail
 
-          scp -i ~/.ssh/volcengine_ecs_key \
-            -P "$ECS_PORT_RESOLVED" \
-            haisnap-b-ssr.tar.gz \
-            "$ECS_USER_RESOLVED@$ECS_HOST_RESOLVED:/tmp/haisnap-b-ssr.tar.gz"
+          set +e
+          upload_output="$(
+            ssh -i ~/.ssh/volcengine_ecs_key \
+              -p "$ECS_PORT_RESOLVED" \
+              -o BatchMode=yes \
+              -o ConnectTimeout=20 \
+              "$ECS_USER_RESOLVED@$ECS_HOST_RESOLVED" \
+              "cat > /tmp/haisnap-b-ssr.tar.gz" \
+              < haisnap-b-ssr.tar.gz 2>&1
+          )"
+          upload_status=$?
+          set -e
+
+          if [ "$upload_status" -ne 0 ]; then
+            safe_output="${upload_output//$ECS_HOST_RESOLVED/[ECS_HOST]}"
+            safe_output="${safe_output//$'\n'/ }"
+            echo "::error title=ECS upload failed::${safe_output}"
+            exit "$upload_status"
+          fi
 
       - name: Restart SSR service
         run: |
