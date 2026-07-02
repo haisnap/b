@@ -1,4 +1,4 @@
-name: Deploy to Volcengine TOS
+name: Deploy SSR to Volcengine ECS
 
 on:
   push:
@@ -10,109 +10,36 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-volcengine
+  group: deploy-volcengine-ecs
   cancel-in-progress: true
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      VOLCENGINE_CDN_REFRESH_WEBHOOK: ${{ secrets.VOLCENGINE_CDN_REFRESH_WEBHOOK }}
-      VOLCENGINE_TOS_ACCESS_KEY_ID: ${{ secrets.VOLCENGINE_TOS_ACCESS_KEY_ID }}
-      VOLCENGINE_TOS_ACCESS_KEY: ${{ secrets.VOLCENGINE_TOS_ACCESS_KEY }}
-      VOLCENGINE_ACCESS_KEY_ID: ${{ secrets.VOLCENGINE_ACCESS_KEY_ID }}
-      VOLCENGINE_ACCESS_KEY: ${{ secrets.VOLCENGINE_ACCESS_KEY }}
-      VOLCENGINE_ACCESSKEY_ID: ${{ secrets.VOLCENGINE_ACCESSKEY_ID }}
-      VOLCENGINE_ACCESSKEY: ${{ secrets.VOLCENGINE_ACCESSKEY }}
-      VOLC_ACCESS_KEY_ID: ${{ secrets.VOLC_ACCESS_KEY_ID }}
-      VOLC_ACCESS_KEY: ${{ secrets.VOLC_ACCESS_KEY }}
-      VOLC_ACCESSKEY: ${{ secrets.VOLC_ACCESSKEY }}
-      TOS_ACCESS_KEY_ID: ${{ secrets.TOS_ACCESS_KEY_ID }}
-      TOS_ACCESS_KEY: ${{ secrets.TOS_ACCESS_KEY }}
-      ACCESS_KEY_ID_SECRET: ${{ secrets.ACCESS_KEY_ID }}
-      AWS_ACCESS_KEY_ID_SECRET: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      VOLCENGINE_TOS_AK: ${{ secrets.VOLCENGINE_TOS_AK }}
-      VOLCENGINE_AK: ${{ secrets.VOLCENGINE_AK }}
-      VOLC_AK: ${{ secrets.VOLC_AK }}
-      TOS_AK: ${{ secrets.TOS_AK }}
-      VOLCENGINE_TOS_ACCESS_KEY_ID_VAR: ${{ vars.VOLCENGINE_TOS_ACCESS_KEY_ID }}
-      VOLCENGINE_TOS_ACCESS_KEY_VAR: ${{ vars.VOLCENGINE_TOS_ACCESS_KEY }}
-      VOLCENGINE_ACCESS_KEY_ID_VAR: ${{ vars.VOLCENGINE_ACCESS_KEY_ID }}
-      VOLCENGINE_ACCESS_KEY_VAR: ${{ vars.VOLCENGINE_ACCESS_KEY }}
-      VOLCENGINE_AK_VAR: ${{ vars.VOLCENGINE_AK }}
-      VOLC_AK_VAR: ${{ vars.VOLC_AK }}
-      TOS_AK_VAR: ${{ vars.TOS_AK }}
-      ACCESS_KEY_ID_VAR: ${{ vars.ACCESS_KEY_ID }}
-      AWS_ACCESS_KEY_ID_VAR: ${{ vars.AWS_ACCESS_KEY_ID }}
-      AK_VAR: ${{ vars.AK }}
-      VOLCENGINE_TOS_SECRET_ACCESS_KEY: ${{ secrets.VOLCENGINE_TOS_SECRET_ACCESS_KEY }}
-      VOLCENGINE_TOS_SECRET_KEY: ${{ secrets.VOLCENGINE_TOS_SECRET_KEY }}
-      VOLCENGINE_SECRET_ACCESS_KEY: ${{ secrets.VOLCENGINE_SECRET_ACCESS_KEY }}
-      VOLCENGINE_SECRET_KEY: ${{ secrets.VOLCENGINE_SECRET_KEY }}
-      VOLCENGINE_SECRETKEY: ${{ secrets.VOLCENGINE_SECRETKEY }}
-      VOLCENGINE_ACCESS_KEY_SECRET: ${{ secrets.VOLCENGINE_ACCESS_KEY_SECRET }}
-      VOLC_SECRET_ACCESS_KEY: ${{ secrets.VOLC_SECRET_ACCESS_KEY }}
-      VOLC_SECRET_KEY: ${{ secrets.VOLC_SECRET_KEY }}
-      VOLC_SECRETKEY: ${{ secrets.VOLC_SECRETKEY }}
-      VOLC_ACCESS_KEY_SECRET: ${{ secrets.VOLC_ACCESS_KEY_SECRET }}
-      TOS_SECRET_ACCESS_KEY: ${{ secrets.TOS_SECRET_ACCESS_KEY }}
-      TOS_SECRET_KEY: ${{ secrets.TOS_SECRET_KEY }}
-      TOS_ACCESS_KEY_SECRET: ${{ secrets.TOS_ACCESS_KEY_SECRET }}
-      SECRET_ACCESS_KEY_SECRET: ${{ secrets.SECRET_ACCESS_KEY }}
-      ACCESS_KEY_SECRET: ${{ secrets.ACCESS_KEY_SECRET }}
-      AWS_SECRET_ACCESS_KEY_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      VOLCENGINE_TOS_SK: ${{ secrets.VOLCENGINE_TOS_SK }}
-      VOLCENGINE_SK: ${{ secrets.VOLCENGINE_SK }}
-      VOLC_SK: ${{ secrets.VOLC_SK }}
-      TOS_SK: ${{ secrets.TOS_SK }}
-      VOLCENGINE_TOS_SECRET_ACCESS_KEY_VAR: ${{ vars.VOLCENGINE_TOS_SECRET_ACCESS_KEY }}
-      VOLCENGINE_TOS_SECRET_KEY_VAR: ${{ vars.VOLCENGINE_TOS_SECRET_KEY }}
-      VOLCENGINE_SECRET_ACCESS_KEY_VAR: ${{ vars.VOLCENGINE_SECRET_ACCESS_KEY }}
-      VOLCENGINE_SECRET_KEY_VAR: ${{ vars.VOLCENGINE_SECRET_KEY }}
-      VOLCENGINE_SK_VAR: ${{ vars.VOLCENGINE_SK }}
-      VOLC_SK_VAR: ${{ vars.VOLC_SK }}
-      TOS_SK_VAR: ${{ vars.TOS_SK }}
-      SECRET_ACCESS_KEY_VAR: ${{ vars.SECRET_ACCESS_KEY }}
-      ACCESS_KEY_SECRET_VAR: ${{ vars.ACCESS_KEY_SECRET }}
-      AWS_SECRET_ACCESS_KEY_VAR: ${{ vars.AWS_SECRET_ACCESS_KEY }}
-      SK_VAR: ${{ vars.SK }}
-      AWS_EC2_METADATA_DISABLED: "true"
-      VOLCENGINE_TOS_REGION: ${{ secrets.VOLCENGINE_TOS_REGION }}
-      VOLCENGINE_REGION: ${{ secrets.VOLCENGINE_REGION }}
-      VOLC_REGION: ${{ secrets.VOLC_REGION }}
-      TOS_REGION: ${{ secrets.TOS_REGION }}
-      REGION_SECRET: ${{ secrets.REGION }}
-      AWS_DEFAULT_REGION_SECRET: ${{ secrets.AWS_DEFAULT_REGION }}
-      VOLCENGINE_TOS_REGION_VAR: ${{ vars.VOLCENGINE_TOS_REGION }}
-      VOLCENGINE_REGION_VAR: ${{ vars.VOLCENGINE_REGION }}
-      VOLC_REGION_VAR: ${{ vars.VOLC_REGION }}
-      TOS_REGION_VAR: ${{ vars.TOS_REGION }}
-      REGION_VAR: ${{ vars.REGION }}
-      AWS_DEFAULT_REGION_VAR: ${{ vars.AWS_DEFAULT_REGION }}
-      VOLCENGINE_TOS_BUCKET_SECRET: ${{ secrets.VOLCENGINE_TOS_BUCKET }}
-      VOLCENGINE_BUCKET: ${{ secrets.VOLCENGINE_BUCKET }}
-      VOLC_BUCKET: ${{ secrets.VOLC_BUCKET }}
-      TOS_BUCKET: ${{ secrets.TOS_BUCKET }}
-      S3_BUCKET: ${{ secrets.S3_BUCKET }}
-      VOLCENGINE_TOS_BUCKET_VAR: ${{ vars.VOLCENGINE_TOS_BUCKET }}
-      VOLCENGINE_BUCKET_VAR: ${{ vars.VOLCENGINE_BUCKET }}
-      VOLC_BUCKET_VAR: ${{ vars.VOLC_BUCKET }}
-      TOS_BUCKET_VAR: ${{ vars.TOS_BUCKET }}
-      S3_BUCKET_VAR: ${{ vars.S3_BUCKET }}
-      VOLCENGINE_TOS_ENDPOINT_SECRET: ${{ secrets.VOLCENGINE_TOS_ENDPOINT }}
-      VOLCENGINE_ENDPOINT: ${{ secrets.VOLCENGINE_ENDPOINT }}
-      VOLC_ENDPOINT: ${{ secrets.VOLC_ENDPOINT }}
-      TOS_ENDPOINT: ${{ secrets.TOS_ENDPOINT }}
-      S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
-      AWS_ENDPOINT_URL_S3: ${{ secrets.AWS_ENDPOINT_URL_S3 }}
-      VOLCENGINE_TOS_ENDPOINT_VAR: ${{ vars.VOLCENGINE_TOS_ENDPOINT }}
-      VOLCENGINE_ENDPOINT_VAR: ${{ vars.VOLCENGINE_ENDPOINT }}
-      VOLC_ENDPOINT_VAR: ${{ vars.VOLC_ENDPOINT }}
-      TOS_ENDPOINT_VAR: ${{ vars.TOS_ENDPOINT }}
-      S3_ENDPOINT_VAR: ${{ vars.S3_ENDPOINT }}
-      AWS_ENDPOINT_URL_S3_VAR: ${{ vars.AWS_ENDPOINT_URL_S3 }}
-      VOLCENGINE_TOS_PREFIX: ${{ secrets.VOLCENGINE_TOS_PREFIX }}
-      VOLCENGINE_TOS_ACL: ${{ secrets.VOLCENGINE_TOS_ACL }}
+      APP_NAME: haisnap-b
+      NODE_VERSION: "20"
+      DEFAULT_ECS_HOST: "124.174.70.119"
+      DEFAULT_ECS_USER: root
+      DEFAULT_ECS_PORT: "22"
+      DEFAULT_DEPLOY_PATH: /www/wwwroot/b-haisnap
+      DEFAULT_APP_PORT: "3000"
+      VOLCENGINE_ECS_HOST: ${{ secrets.VOLCENGINE_ECS_HOST }}
+      VOLCENGINE_ECS_USER: ${{ secrets.VOLCENGINE_ECS_USER }}
+      VOLCENGINE_ECS_PORT: ${{ secrets.VOLCENGINE_ECS_PORT }}
+      VOLCENGINE_ECS_DEPLOY_PATH: ${{ secrets.VOLCENGINE_ECS_DEPLOY_PATH }}
+      VOLCENGINE_ECS_APP_PORT: ${{ secrets.VOLCENGINE_ECS_APP_PORT }}
+      VOLCENGINE_ECS_SSH_KEY: ${{ secrets.VOLCENGINE_ECS_SSH_KEY }}
+      ECS_HOST: ${{ secrets.ECS_HOST }}
+      ECS_USER: ${{ secrets.ECS_USER }}
+      ECS_PORT: ${{ secrets.ECS_PORT }}
+      ECS_DEPLOY_PATH: ${{ secrets.ECS_DEPLOY_PATH }}
+      ECS_APP_PORT: ${{ secrets.ECS_APP_PORT }}
+      ECS_SSH_KEY: ${{ secrets.ECS_SSH_KEY }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     steps:
       - name: Checkout
@@ -121,121 +48,115 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build static site
+      - name: Build SSR app
         run: npm run build
 
-      - name: Ensure AWS CLI
+      - name: Pack standalone server
         run: |
-          if ! command -v aws >/dev/null 2>&1; then
-            python3 -m pip install --user awscli
-            echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          set -euo pipefail
+
+          rm -rf deploy
+          mkdir -p deploy/app/.next
+          cp -R .next/standalone/. deploy/app/
+          cp -R .next/static deploy/app/.next/static
+          cp -R public deploy/app/public
+          tar -czf haisnap-b-ssr.tar.gz -C deploy app
+
+      - name: Resolve ECS deploy settings
+        run: |
+          set -euo pipefail
+
+          first_non_empty() {
+            for value in "$@"; do
+              if [ -n "${value:-}" ]; then
+                printf '%s' "$value"
+                return 0
+              fi
+            done
+            return 1
+          }
+
+          ECS_HOST_RESOLVED="$(first_non_empty "${VOLCENGINE_ECS_HOST:-}" "${ECS_HOST:-}" "${SSH_HOST:-}" "${DEFAULT_ECS_HOST:-}")"
+          ECS_USER_RESOLVED="$(first_non_empty "${VOLCENGINE_ECS_USER:-}" "${ECS_USER:-}" "${SSH_USER:-}" "${DEFAULT_ECS_USER:-}")"
+          ECS_PORT_RESOLVED="$(first_non_empty "${VOLCENGINE_ECS_PORT:-}" "${ECS_PORT:-}" "${SSH_PORT:-}" "${DEFAULT_ECS_PORT:-}")"
+          ECS_DEPLOY_PATH_RESOLVED="$(first_non_empty "${VOLCENGINE_ECS_DEPLOY_PATH:-}" "${ECS_DEPLOY_PATH:-}" "${DEFAULT_DEPLOY_PATH:-}")"
+          ECS_APP_PORT_RESOLVED="$(first_non_empty "${VOLCENGINE_ECS_APP_PORT:-}" "${ECS_APP_PORT:-}" "${DEFAULT_APP_PORT:-}")"
+          ECS_SSH_KEY_RESOLVED="$(first_non_empty "${VOLCENGINE_ECS_SSH_KEY:-}" "${ECS_SSH_KEY:-}" "${SSH_PRIVATE_KEY:-}")" || ECS_SSH_KEY_RESOLVED=""
+
+          if [ -z "$ECS_SSH_KEY_RESOLVED" ]; then
+            echo "::error title=Missing ECS SSH key::Add VOLCENGINE_ECS_SSH_KEY, ECS_SSH_KEY, or SSH_PRIVATE_KEY in GitHub repository secrets."
+            exit 1
           fi
 
-      - name: Check TOS access key secret
+          {
+            echo "ECS_HOST_RESOLVED=$ECS_HOST_RESOLVED"
+            echo "ECS_USER_RESOLVED=$ECS_USER_RESOLVED"
+            echo "ECS_PORT_RESOLVED=$ECS_PORT_RESOLVED"
+            echo "ECS_DEPLOY_PATH_RESOLVED=$ECS_DEPLOY_PATH_RESOLVED"
+            echo "ECS_APP_PORT_RESOLVED=$ECS_APP_PORT_RESOLVED"
+          } >> "$GITHUB_ENV"
+
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$ECS_SSH_KEY_RESOLVED" > ~/.ssh/volcengine_ecs_key
+          chmod 600 ~/.ssh/volcengine_ecs_key
+          ssh-keyscan -p "$ECS_PORT_RESOLVED" -H "$ECS_HOST_RESOLVED" >> ~/.ssh/known_hosts
+
+      - name: Upload SSR package
         run: |
           set -euo pipefail
 
-          source .github/scripts/volcengine-deploy-env.sh
-          resolve_volcengine_deploy_env
-          require_volcengine_value "$AWS_ACCESS_KEY_ID" "TOS access key secret" "VOLCENGINE_TOS_ACCESS_KEY_ID, VOLCENGINE_TOS_ACCESS_KEY, VOLCENGINE_ACCESS_KEY_ID, VOLCENGINE_ACCESS_KEY, VOLCENGINE_ACCESSKEY, VOLC_ACCESS_KEY_ID, VOLC_ACCESS_KEY, VOLC_ACCESSKEY, TOS_ACCESS_KEY_ID, TOS_ACCESS_KEY, ACCESS_KEY_ID, AWS_ACCESS_KEY_ID, VOLCENGINE_TOS_AK, VOLCENGINE_AK, VOLC_AK, TOS_AK, AK"
+          scp -i ~/.ssh/volcengine_ecs_key \
+            -P "$ECS_PORT_RESOLVED" \
+            haisnap-b-ssr.tar.gz \
+            "$ECS_USER_RESOLVED@$ECS_HOST_RESOLVED:/tmp/haisnap-b-ssr.tar.gz"
 
-      - name: Check TOS secret access key
+      - name: Restart SSR service
         run: |
           set -euo pipefail
 
-          source .github/scripts/volcengine-deploy-env.sh
-          resolve_volcengine_deploy_env
-          require_volcengine_value "$AWS_SECRET_ACCESS_KEY" "TOS secret access key" "VOLCENGINE_TOS_SECRET_ACCESS_KEY, VOLCENGINE_TOS_SECRET_KEY, VOLCENGINE_SECRET_ACCESS_KEY, VOLCENGINE_SECRET_KEY, VOLCENGINE_SECRETKEY, VOLCENGINE_ACCESS_KEY_SECRET, VOLC_SECRET_ACCESS_KEY, VOLC_SECRET_KEY, VOLC_SECRETKEY, VOLC_ACCESS_KEY_SECRET, TOS_SECRET_ACCESS_KEY, TOS_SECRET_KEY, TOS_ACCESS_KEY_SECRET, SECRET_ACCESS_KEY, ACCESS_KEY_SECRET, AWS_SECRET_ACCESS_KEY, VOLCENGINE_TOS_SK, VOLCENGINE_SK, VOLC_SK, TOS_SK, SK"
-
-      - name: Check TOS region secret
-        run: |
+          ssh -i ~/.ssh/volcengine_ecs_key \
+            -p "$ECS_PORT_RESOLVED" \
+            "$ECS_USER_RESOLVED@$ECS_HOST_RESOLVED" \
+            "APP_NAME='$APP_NAME' DEPLOY_PATH='$ECS_DEPLOY_PATH_RESOLVED' APP_PORT='$ECS_APP_PORT_RESOLVED' bash -s" <<'REMOTE'
           set -euo pipefail
 
-          source .github/scripts/volcengine-deploy-env.sh
-          resolve_volcengine_deploy_env
-          require_volcengine_value "$AWS_DEFAULT_REGION" "TOS region" "VOLCENGINE_TOS_REGION, VOLCENGINE_REGION, VOLC_REGION, TOS_REGION, REGION, AWS_DEFAULT_REGION"
-
-      - name: Check TOS bucket secret
-        run: |
-          set -euo pipefail
-
-          source .github/scripts/volcengine-deploy-env.sh
-          resolve_volcengine_deploy_env
-          require_volcengine_value "$VOLCENGINE_TOS_BUCKET_RESOLVED" "TOS bucket" "VOLCENGINE_TOS_BUCKET, VOLCENGINE_BUCKET, VOLC_BUCKET, TOS_BUCKET, S3_BUCKET"
-
-      - name: Check TOS endpoint secret
-        run: |
-          set -euo pipefail
-
-          source .github/scripts/volcengine-deploy-env.sh
-          resolve_volcengine_deploy_env
-          require_volcengine_value "$VOLCENGINE_TOS_ENDPOINT_RESOLVED" "TOS endpoint" "VOLCENGINE_TOS_ENDPOINT, VOLCENGINE_ENDPOINT, VOLC_ENDPOINT, TOS_ENDPOINT, S3_ENDPOINT, AWS_ENDPOINT_URL_S3"
-
-      - name: Sync static files to Volcengine TOS
-        run: |
-          set -euo pipefail
-
-          source .github/scripts/volcengine-deploy-env.sh
-          resolve_volcengine_deploy_env
-          require_volcengine_value "$AWS_ACCESS_KEY_ID" "TOS access key secret" "see preflight step"
-          require_volcengine_value "$AWS_SECRET_ACCESS_KEY" "TOS secret access key" "see preflight step"
-          require_volcengine_value "$AWS_DEFAULT_REGION" "TOS region" "see preflight step"
-          require_volcengine_value "$VOLCENGINE_TOS_BUCKET_RESOLVED" "TOS bucket" "see preflight step"
-          require_volcengine_value "$VOLCENGINE_TOS_ENDPOINT_RESOLVED" "TOS endpoint" "see preflight step"
-
-          destination="s3://${VOLCENGINE_TOS_BUCKET_RESOLVED}"
-          if [ -n "${VOLCENGINE_TOS_PREFIX:-}" ]; then
-            destination="${destination%/}/${VOLCENGINE_TOS_PREFIX#/}"
+          if ! command -v node >/dev/null 2>&1; then
+            echo "Node.js is required on the ECS server."
+            exit 1
           fi
 
-          acl_args=()
-          if [ -n "${VOLCENGINE_TOS_ACL:-}" ]; then
-            acl_args=(--acl "${VOLCENGINE_TOS_ACL}")
+          if ! command -v pm2 >/dev/null 2>&1; then
+            if command -v sudo >/dev/null 2>&1; then
+              sudo npm install -g pm2
+            else
+              npm install -g pm2
+            fi
           fi
 
-          aws configure set default.s3.addressing_style virtual
+          mkdir -p "$DEPLOY_PATH/releases"
+          release="$DEPLOY_PATH/releases/$(date +%Y%m%d%H%M%S)"
+          mkdir -p "$release"
 
-          set +e
-          sync_output="$(
-            aws s3 sync out/ "$destination" \
-            --endpoint-url "$VOLCENGINE_TOS_ENDPOINT_RESOLVED" \
-            --delete \
-            --cache-control "public,max-age=300" \
-            --content-disposition "inline" \
-            "${acl_args[@]}" 2>&1
-          )"
-          sync_status=$?
-          set -e
+          tar -xzf /tmp/haisnap-b-ssr.tar.gz -C "$release" --strip-components=1
+          ln -sfn "$release" "$DEPLOY_PATH/current"
 
-          if [ "$sync_status" -ne 0 ]; then
-            safe_output="${sync_output//$AWS_ACCESS_KEY_ID/***}"
-            safe_output="${safe_output//$AWS_SECRET_ACCESS_KEY/***}"
-            safe_output="${safe_output//$VOLCENGINE_TOS_ENDPOINT_RESOLVED/[TOS_ENDPOINT]}"
-            safe_output="${safe_output//$VOLCENGINE_TOS_BUCKET_RESOLVED/[TOS_BUCKET]}"
-            safe_output="${safe_output//$'\n'/ }"
-            echo "::error title=Volcengine TOS sync failed::${safe_output}"
-            exit "$sync_status"
+          cd "$DEPLOY_PATH/current"
+          export NODE_ENV=production
+          export PORT="$APP_PORT"
+          export HOSTNAME=0.0.0.0
+
+          if pm2 describe "$APP_NAME" >/dev/null 2>&1; then
+            pm2 reload "$APP_NAME" --update-env
+          else
+            pm2 start server.js --name "$APP_NAME" --update-env
           fi
 
-      - name: Optional CDN refresh hook
-        if: ${{ env.VOLCENGINE_CDN_REFRESH_WEBHOOK != '' }}
-        env:
-          VOLCENGINE_CDN_REFRESH_TOKEN: ${{ secrets.VOLCENGINE_CDN_REFRESH_TOKEN }}
-        run: |
-          set -euo pipefail
-
-          auth_args=()
-          if [ -n "${VOLCENGINE_CDN_REFRESH_TOKEN:-}" ]; then
-            auth_args=(-H "Authorization: Bearer ${VOLCENGINE_CDN_REFRESH_TOKEN}")
-          fi
-
-          curl -fsS -X POST "${VOLCENGINE_CDN_REFRESH_WEBHOOK}" \
-            "${auth_args[@]}" \
-            -H "Content-Type: application/json" \
-            --data '{"site":"https://b.haisnap.com/","paths":["https://b.haisnap.com/","https://b.haisnap.com/bank/","https://b.haisnap.com/robots.txt","https://b.haisnap.com/sitemap.xml"]}'
+          pm2 save
+          find "$DEPLOY_PATH/releases" -mindepth 1 -maxdepth 1 -type d | sort | head -n -5 | xargs -r rm -rf
+          REMOTE

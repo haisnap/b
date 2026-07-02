@@ -1,37 +1,28 @@
-# Volcengine TOS CI/CD
+# Volcengine ECS SSR CI/CD
 
-This project builds a static Next.js site and deploys the exported `out/` directory to Volcengine TOS from GitHub Actions.
+This project is deployed as a Next.js SSR app. GitHub Actions builds a standalone Next.js server, uploads it to the Volcengine ECS instance over SSH, and restarts it with PM2.
+
+Do not point `b.haisnap.com` to TOS for SSR. Keep the domain on the ECS or on a CDN/load balancer that forwards traffic to the ECS Node service.
 
 ## Required GitHub Secrets
 
-- `VOLCENGINE_TOS_ACCESS_KEY_ID`: Volcengine access key ID.
-- `VOLCENGINE_TOS_SECRET_ACCESS_KEY`: Volcengine secret access key.
-- `VOLCENGINE_TOS_REGION`: TOS region, for example `cn-beijing`.
-- `VOLCENGINE_TOS_BUCKET`: Target TOS bucket name.
-- `VOLCENGINE_TOS_ENDPOINT`: S3-compatible TOS endpoint for the bucket region.
-
-The workflow also accepts these aliases:
-
-- Access key ID: `VOLCENGINE_TOS_ACCESS_KEY`, `VOLCENGINE_ACCESS_KEY_ID`, `VOLCENGINE_ACCESS_KEY`, `VOLCENGINE_ACCESSKEY`, `VOLC_ACCESS_KEY_ID`, `VOLC_ACCESS_KEY`, `VOLC_ACCESSKEY`, `TOS_ACCESS_KEY_ID`, `TOS_ACCESS_KEY`, `ACCESS_KEY_ID`, `AWS_ACCESS_KEY_ID`, `VOLCENGINE_TOS_AK`, `VOLCENGINE_AK`, `VOLC_AK`, `TOS_AK`, or `AK`.
-- Secret access key: `VOLCENGINE_TOS_SECRET_KEY`, `VOLCENGINE_SECRET_ACCESS_KEY`, `VOLCENGINE_SECRET_KEY`, `VOLCENGINE_SECRETKEY`, `VOLCENGINE_ACCESS_KEY_SECRET`, `VOLC_SECRET_ACCESS_KEY`, `VOLC_SECRET_KEY`, `VOLC_SECRETKEY`, `VOLC_ACCESS_KEY_SECRET`, `TOS_SECRET_ACCESS_KEY`, `TOS_SECRET_KEY`, `TOS_ACCESS_KEY_SECRET`, `SECRET_ACCESS_KEY`, `ACCESS_KEY_SECRET`, `AWS_SECRET_ACCESS_KEY`, `VOLCENGINE_TOS_SK`, `VOLCENGINE_SK`, `VOLC_SK`, `TOS_SK`, or `SK`.
-- Region: `VOLCENGINE_REGION`, `VOLC_REGION`, `TOS_REGION`, `REGION`, or `AWS_DEFAULT_REGION`.
-- Bucket: `VOLCENGINE_BUCKET`, `VOLC_BUCKET`, `TOS_BUCKET`, or `S3_BUCKET`.
-- Endpoint: `VOLCENGINE_ENDPOINT`, `VOLC_ENDPOINT`, `TOS_ENDPOINT`, `S3_ENDPOINT`, or `AWS_ENDPOINT_URL_S3`.
-
-Region, bucket, and endpoint values can also be stored as GitHub Variables instead of Secrets. The workflow can read access keys from Variables for compatibility, but access keys should be kept in GitHub Secrets.
+- `VOLCENGINE_ECS_SSH_KEY`: Private SSH key that can log in to the ECS instance.
 
 ## Optional GitHub Secrets
 
-- `VOLCENGINE_TOS_PREFIX`: Object prefix inside the bucket. Leave empty when the site is served from the bucket root.
-- `VOLCENGINE_TOS_ACL`: Optional ACL such as `public-read`. Leave empty when access is controlled by bucket policy or CDN origin settings.
-- `VOLCENGINE_CDN_REFRESH_WEBHOOK`: Optional HTTP endpoint that refreshes CDN cache after upload.
-- `VOLCENGINE_CDN_REFRESH_TOKEN`: Optional bearer token for the CDN refresh webhook.
+- `VOLCENGINE_ECS_HOST`: ECS public IP or hostname. Defaults to `124.174.70.119`.
+- `VOLCENGINE_ECS_USER`: SSH user. Defaults to `root`.
+- `VOLCENGINE_ECS_PORT`: SSH port. Defaults to `22`.
+- `VOLCENGINE_ECS_DEPLOY_PATH`: Release directory on the server. Defaults to `/www/wwwroot/b-haisnap`.
+- `VOLCENGINE_ECS_APP_PORT`: Next.js app port. Defaults to `3000`.
 
-## Local Commands
+Common aliases are also supported: `ECS_HOST`, `ECS_USER`, `ECS_PORT`, `ECS_DEPLOY_PATH`, `ECS_APP_PORT`, `ECS_SSH_KEY`, `SSH_HOST`, `SSH_USER`, `SSH_PORT`, and `SSH_PRIVATE_KEY`.
 
-```bash
-npm install
-npm run build
-```
+## Server Requirements
 
-The static output will be generated into `out/`.
+- Node.js 20 or newer.
+- npm.
+- Nginx or another reverse proxy forwarding `b.haisnap.com` to `127.0.0.1:3000`.
+- HTTPS certificate configured on the reverse proxy or CDN.
+
+The workflow installs PM2 automatically if it is missing and the SSH user has permission to install global npm packages.
