@@ -103,8 +103,12 @@ jobs:
           } >> "$GITHUB_ENV"
 
           install -m 700 -d ~/.ssh
-          printf '%s\n' "$ECS_SSH_KEY_RESOLVED" > ~/.ssh/volcengine_ecs_key
+          printf '%b\n' "$ECS_SSH_KEY_RESOLVED" | tr -d '\r' > ~/.ssh/volcengine_ecs_key
           chmod 600 ~/.ssh/volcengine_ecs_key
+          if ! ssh-keygen -y -f ~/.ssh/volcengine_ecs_key >/dev/null 2>&1; then
+            echo "::error title=Invalid ECS SSH key::The ECS SSH key secret could not be parsed. Re-copy the full private key, including BEGIN and END lines."
+            exit 1
+          fi
           ssh-keyscan -p "$ECS_PORT_RESOLVED" -H "$ECS_HOST_RESOLVED" >> ~/.ssh/known_hosts
 
       - name: Upload SSR package
