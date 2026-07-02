@@ -199,7 +199,7 @@ jobs:
             acl_args=(--acl "${VOLCENGINE_TOS_ACL}")
           fi
 
-          aws configure set default.s3.addressing_style path
+          aws configure set default.s3.addressing_style virtual
 
           set +e
           sync_output="$(
