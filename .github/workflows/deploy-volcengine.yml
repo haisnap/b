@@ -197,11 +197,12 @@ jobs:
           export PORT="$APP_PORT"
           export HOSTNAME=0.0.0.0
 
+          # pm2 reload keeps the original server.js path, so restart after the
+          # current symlink is swapped to make sure the new release is served.
           if pm2 describe "$APP_NAME" >/dev/null 2>&1; then
-            pm2 reload "$APP_NAME" --update-env
-          else
-            pm2 start server.js --name "$APP_NAME" --update-env
+            pm2 delete "$APP_NAME"
           fi
+          pm2 start server.js --name "$APP_NAME" --update-env
 
           pm2 save
           find "$DEPLOY_PATH/releases" -mindepth 1 -maxdepth 1 -type d | sort | head -n -5 | xargs -r rm -rf
