@@ -162,7 +162,7 @@ export default function HomePage() {
         </a>
       </header>
 
-      <main id="main">
+      <main id="main" className="home-page">
         <section className="hero home-hero" aria-labelledby="hero-title">
           <div className="hero-inner">
             <div className="hero-copy">
@@ -371,12 +371,6 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="site-footer">
-        <div className="container footer-inner">
-          <span>© 2026 HaiSnap AI. 企业 AI 服务合作</span>
-          <a href="https://haisnap.ai/zh">haisnap.ai</a>
-        </div>
-      </footer>
     </>
   );
 }

@@ -1175,6 +1175,116 @@ select {
   font-weight: 600;
 }
 
+.home-page {
+  background: var(--dark);
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.home-page .institution-band,
+.home-page .intro-band,
+.home-page .section-light,
+.home-page .value-section,
+.home-page .faq-section {
+  border-color: var(--line-dark);
+  background: var(--dark);
+}
+
+.home-page .intro-band,
+.home-page .section-light,
+.home-page .value-section,
+.home-page .faq-section {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0)),
+    var(--dark);
+}
+
+.home-page .institution-inner > p,
+.home-page .section-kicker > span,
+.home-page .pilot-role,
+.home-page .eyebrow-dark,
+.home-page .visual-caption span {
+  color: var(--cyan);
+}
+
+.home-page .institution-list span {
+  border-left-color: var(--line-dark);
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.home-page .section-kicker h2,
+.home-page .section-heading h2,
+.home-page .diagnosis-list h3,
+.home-page .pilot-list h3,
+.home-page .visual-caption strong,
+.home-page .value-label strong,
+.home-page .value-copy h3,
+.home-page .faq-list summary {
+  color: #f4f7f8;
+}
+
+.home-page .diagnosis-list,
+.home-page .pilot-list,
+.home-page .value-lines,
+.home-page .faq-list {
+  border-top-color: rgba(255, 255, 255, 0.22);
+}
+
+.home-page .diagnosis-list article,
+.home-page .pilot-list article,
+.home-page .value-lines > article,
+.home-page .faq-list details {
+  border-bottom-color: var(--line-dark);
+}
+
+.home-page .diagnosis-list p,
+.home-page .pilot-list p,
+.home-page .split-heading > p,
+.home-page .value-copy p,
+.home-page .value-lines ul,
+.home-page .faq-list p {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.home-page .pilot-list ul {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.home-page .diagnosis-list article > span,
+.home-page .value-label-green,
+.home-page .value-label-gold,
+.home-page .value-label-blue {
+  color: var(--cyan);
+}
+
+.home-page .pilot-list li::before,
+.home-page .value-lines li::before {
+  background: rgba(138, 237, 255, 0.68);
+}
+
+.home-page .pilot-visual {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: #12171c;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.32);
+}
+
+.home-page .visual-caption {
+  border-bottom-color: var(--line-dark);
+  background: #11161b;
+}
+
+.home-page .pilot-visual img {
+  background: #11161b;
+}
+
+.home-page .pilot-visual figcaption {
+  border-top-color: var(--line-dark);
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.home-page .faq-list summary::after {
+  color: var(--cyan);
+}
+
 @media (max-width: 1100px) {
   .site-header {
     grid-template-columns: 150px minmax(0, 1fr) auto;
