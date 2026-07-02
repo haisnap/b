@@ -1,39 +1,82 @@
-import { SemBentoGrid } from "./components/SemBento";
-
 export const dynamic = "force-dynamic";
 
 const pageUrl = "https://b.haisnap.com/";
 
-const partnerTypes = [
-  "行业销售 / 渠道商",
-  "企服销售 / SaaS 销售",
-  "软件代理商 / 系统集成商",
-  "培训讲师 / 企业内训资源方",
-  "咨询顾问 / 管理顾问",
-  "营销 / 私域 / 电商服务商"
+const partnerTypes = ["行业销售", "企服渠道", "培训讲师", "系统集成商", "咨询顾问"];
+
+const diagnoses = [
+  ["01", "客户知道要做 AI，但说不清第一步", "企业老板、业务负责人和培训客户已经开始问 AI，但需求往往停在一句“我们也想做一个”。"],
+  ["02", "合作方有客户关系，却缺少售前材料", "没有清晰场景、Demo、报价边界和交付路径，客户兴趣很容易停在聊天阶段。"],
+  ["03", "项目能不能交付，取决于后端能力", "企业 AI 服务需要平台、方案、数据整理、智能体配置、培训复盘和持续运营支持。"]
 ];
 
 const supportItems = [
-  ["平台能力", "文案、PPT、报告、网页、应用、知识库和智能体能力，支持快速演示与试点验证。"],
-  ["售前方案", "把客户模糊的 AI 想法整理成可沟通、可报价、可推进的项目方案。"],
-  ["交付支持", "协助完成需求拆解、Demo 原型、试点交付、培训复盘和后续扩展。"],
-  ["合作机制", "支持客户推荐、联合跟进、渠道合作和部署合伙人等合作方式。"]
+  {
+    role: "平台与 Demo",
+    title: "先让客户看到一个能跑的结果",
+    body: "用响指的 AI 工作台、知识库、智能体和应用生成能力，快速做出演示原型。",
+    items: ["业务 Demo", "知识库问答", "智能体流程"]
+  },
+  {
+    role: "售前与方案",
+    title: "把模糊需求整理成可沟通项目",
+    body: "协助拆解客户场景、准备沟通提纲、试点方案、报价范围和交付边界。",
+    items: ["需求诊断", "方案包装", "报价边界"]
+  },
+  {
+    role: "交付与复盘",
+    title: "从试点项目走到持续服务",
+    body: "参与需求确认、Demo 调整、培训交付、上线复盘和后续扩展建议。",
+    items: ["试点交付", "客户培训", "运营复盘"]
+  }
 ];
 
-const projectCards = [
-  ["AI 咨询培训", "帮助客户理解 AI 能用在哪些业务场景，并形成第一批试点方向。"],
-  ["企业知识库", "整理产品手册、历史方案、客服问答和内部文档，变成可调用资产。"],
-  ["定制智能体", "围绕销售、市场、运营、客服和管理场景，构建可落地的 AI 助手。"],
-  ["工作流优化", "把会议、报价、培训、客户跟进等 SOP 转成可复用的 AI Skill。"],
-  ["业务 Demo 原型", "快速做出页面、应用或工具原型，让客户先看到可交付成果。"],
-  ["私有化与 API", "面向有安全和集成要求的客户，评估私有化部署与系统对接路径。"]
+const projectLines = [
+  {
+    color: "value-label-green",
+    number: "01",
+    label: "咨询培训",
+    title: "AI 咨询、企业内训和试点场景诊断",
+    body: "适合已有企业培训、园区协会、商会或老板客户资源的合作方，从认知课和场景诊断切入。",
+    items: ["AI 场景课", "业务流程诊断", "试点清单"]
+  },
+  {
+    color: "value-label-blue",
+    number: "02",
+    label: "项目落地",
+    title: "企业知识库、智能体和工作流优化",
+    body: "把客户资料、产品手册、销售 SOP、会议记录和客服问答整理成可调用的 AI 能力。",
+    items: ["企业知识库", "销售助手", "SOP Skill"]
+  },
+  {
+    color: "value-label-gold",
+    number: "03",
+    label: "集成部署",
+    title: "私有化部署、API 接入和行业应用原型",
+    body: "面向有安全、权限和系统集成要求的客户，评估专属部署、接口接入和业务应用原型。",
+    items: ["私有化部署", "API 对接", "应用原型"]
+  }
 ];
 
-const cooperationModes = [
-  ["推荐企业客户", "你提供客户线索，响指协助需求判断、沟通和后续交付。"],
-  ["联合跟进项目", "你负责客户关系，响指提供售前方案、Demo 和技术交付支持。"],
-  ["成为渠道伙伴", "围绕行业、区域或客户类型，持续推荐并共同服务企业客户。"],
-  ["参与部署服务", "参与客户诊断、试点推进、培训复盘和后续运营服务。"]
+const executionSteps = [
+  ["01", "判断资源", "确认你能触达的客户类型"],
+  ["02", "拆解需求", "把客户想法拆成试点场景"],
+  ["03", "准备演示", "生成 Demo、方案和话术"],
+  ["04", "联合跟进", "一起完成客户沟通与报价"],
+  ["05", "试点交付", "交付结果并复盘扩展方向"],
+  ["06", "持续合作", "沉淀行业项目和客户案例"]
+];
+
+const cooperationCards = [
+  ["推荐客户", "你提供客户线索，响指协助判断需求、准备材料和后续跟进。"],
+  ["联合售前", "你负责客户关系，响指提供方案、Demo、报价边界和技术解释。"],
+  ["渠道合作", "围绕行业、区域或客群，持续包装企业 AI 服务项目。"]
+];
+
+const faqs = [
+  ["这是不是卖加盟？", "不是。这个页面面向有企业客户资源的合作方，先判断客户需求和可合作方式，不收所谓加盟费。"],
+  ["我不懂技术可以合作吗？", "可以。你负责客户关系、行业理解和业务场景，响指提供平台、售前、Demo 和交付支持。"],
+  ["第一单适合做什么？", "优先从边界清晰的小场景开始，例如企业知识库、销售助手、AI 培训、业务 Demo 或 SOP 流程优化。"]
 ];
 
 const structuredData = {
@@ -55,14 +98,28 @@ const structuredData = {
       description:
         "响指 AI 面向有企业客户资源、渠道资源、咨询资源和服务交付能力的合作方，提供平台、方案、售前和交付支持。",
       url: pageUrl
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://b.haisnap.com/#faq",
+      mainEntity: faqs.map((item) => ({
+        "@type": "Question",
+        name: item[0],
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item[1]
+        }
+      }))
     }
   ]
 };
 
 export const metadata = {
-  title: "企业 AI 服务合作 | 响指 AI",
+  title: {
+    absolute: "企业 AI 服务合作 | 响指 AI"
+  },
   description:
-    "有企业客户资源，想切入 AI 服务市场？响指 AI 提供平台、方案、售前和交付支持，帮助合作方把客户需求变成可试点、可报价、可交付的企业 AI 项目。",
+    "有企业客户资源，想切入 AI 服务市场？响指 AI 提供平台、方案、售前、Demo 和交付支持，帮助合作方把客户需求变成可试点、可报价、可交付的企业 AI 项目。",
   alternates: {
     canonical: "/"
   },
@@ -74,9 +131,8 @@ export const metadata = {
     type: "website",
     siteName: "响指 AI",
     url: pageUrl,
-    title: "企业 AI 服务合作 | 响指 AI",
-    description:
-      "你负责客户关系和业务需求，响指 AI 提供平台、方案、售前和交付支持。"
+    title: "企业 AI 服务合作",
+    description: "你负责客户关系和业务需求，响指 AI 提供平台、方案、售前、Demo 和交付支持。"
   }
 };
 
@@ -87,157 +143,98 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <a className="skip-link sem-skip" href="#sem-main">
+      <a className="skip-link" href="#main">
         跳到主要内容
       </a>
 
-      <header className="sem-header" aria-label="企业 AI 服务合作导航">
-        <a className="sem-brand" href="/" aria-label="响指 AI 企业服务合作">
-          <img src="/assets/haisnap-logo.webp" alt="HaiSnap" width="142" height="54" fetchPriority="high" />
+      <header className="site-header" aria-label="企业 AI 服务合作导航">
+        <a className="brand" href="/" aria-label="响指 AI 首页">
+          <img src="/assets/haisnap-header-logo.webp" alt="HaiSnap" width="120" height="60" fetchPriority="high" />
         </a>
-        <nav className="sem-nav" aria-label="页面导航">
-          <a href="#sem-fit">适合谁</a>
-          <a href="#sem-projects">项目类型</a>
-          <a href="#sem-contact">咨询合作</a>
+        <nav className="site-nav" aria-label="页面导航">
+          <a href="#fit">适合谁</a>
+          <a href="#support">响指提供什么</a>
+          <a href="#projects">项目类型</a>
+          <a href="#contact">咨询合作</a>
         </nav>
-        <a className="sem-header-cta" href="#sem-contact">
-          获取合作资料
+        <a className="header-cta" href="#contact">
+          加企微咨询
         </a>
       </header>
 
-      <main id="sem-main" className="sem-page">
-        <section className="sem-hero" aria-labelledby="sem-hero-title">
-          <div className="sem-container sem-hero-grid">
-            <div className="sem-hero-copy">
-              <p className="sem-eyebrow">企业 AI 服务合作 · 百度 SEM 承接页</p>
-              <h1 id="sem-hero-title">有客户资源，想切入企业 AI 服务市场？</h1>
-              <p className="sem-hero-lead">
-                不需要自己做平台，也不需要从零组技术团队。你负责客户关系和业务需求，响指 AI 提供平台、方案、售前和交付支持，一起把客户的 AI 想法变成可试点、可报价、可交付的项目。
+      <main id="main">
+        <section className="hero home-hero" aria-labelledby="hero-title">
+          <div className="hero-inner">
+            <div className="hero-copy">
+              <p className="eyebrow">响指 AI · 企业服务合作</p>
+              <h1 id="hero-title">把企业客户的 AI 需求，变成可交付项目</h1>
+              <p className="hero-lead">
+                如果你有企业客户资源、渠道资源或培训咨询资源，响指可以补上平台、方案、售前、Demo 和交付支持。你负责客户关系，我们一起把客户的 AI 想法变成试点项目。
               </p>
-              <div className="sem-actions" aria-label="首屏行动">
-                <a className="sem-button sem-button-primary" href="#sem-contact">
-                  加企业微信咨询
+              <div className="hero-actions" aria-label="首屏行动">
+                <a className="button button-primary" href="#contact">
+                  扫码咨询合作
                 </a>
-                <a className="sem-button sem-button-secondary" href="#sem-bento">
-                  了解合作方式
+                <a className="button button-secondary" href="#projects">
+                  查看可合作项目
                 </a>
               </div>
-              <ul className="sem-hero-points" aria-label="合作特点">
-                <li>不卖加盟，不收代理费</li>
-                <li>先判断客户需求，再包装试点项目</li>
-                <li>支持售前、Demo、方案和交付</li>
+              <ul className="hero-guardrails" aria-label="合作边界">
+                <li>不卖加盟</li>
+                <li>不要求自建技术团队</li>
+                <li>先做小场景试点</li>
               </ul>
             </div>
 
-            <aside className="sem-hero-panel" aria-label="企业 AI 项目诊断">
-              <div className="sem-panel-window">
-                <div className="sem-window-bar">
-                  <span>HaiSnap AI Project Desk</span>
-                  <strong>LIVE</strong>
-                </div>
-                <div className="sem-panel-body">
-                  <p>客户说：我们也想做 AI，但不知道先做什么。</p>
-                  <div className="sem-panel-route">
-                    <span>需求拆解</span>
-                    <span>试点方案</span>
-                    <span>Demo 演示</span>
-                    <span>项目交付</span>
-                  </div>
-                  <div className="sem-panel-result">
-                    <span>建议入口</span>
-                    <strong>先做一个可验证的小场景</strong>
-                    <p>知识库、销售助手、培训课件、客户资料整理或业务 Demo。</p>
-                  </div>
-                </div>
+            <div className="hero-product" aria-label="响指企业 AI 服务合作工作台示意">
+              <div className="product-toolbar">
+                <span>HaiSnap Partner Desk</span>
+                <span className="product-status">方案准备中</span>
               </div>
-            </aside>
+              <div className="task-brief">
+                <span>客户需求</span>
+                <strong>客户说想做 AI，但不知道先从培训、知识库还是业务流程开始</strong>
+              </div>
+              <img
+                src="/assets/haisnap-prompt-console.png"
+                alt="响指 AI 工作台把客户需求整理成方案和可执行任务"
+                width="1818"
+                height="1000"
+                fetchPriority="high"
+              />
+              <div className="product-foot">
+                <span>需求诊断</span>
+                <span>Demo 演示</span>
+                <span>试点交付</span>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section id="sem-bento" className="sem-section sem-section-bento" aria-labelledby="sem-bento-title">
-          <div className="sem-container">
-            <div className="sem-section-heading">
-              <span>合作不是只给你一个 AI 账号</span>
-              <h2 id="sem-bento-title">响指帮你把客户需求变成企业 AI 项目</h2>
-              <p>
-                搜索进来的客户通常已经知道 AI 是机会，但缺的是方案、售前材料、演示能力和交付路径。这一页要把合作价值讲清楚，而不是堆功能。
-              </p>
-            </div>
-            <SemBentoGrid />
-          </div>
-        </section>
-
-        <section id="sem-fit" className="sem-section sem-section-fit" aria-labelledby="sem-fit-title">
-          <div className="sem-container sem-split">
-            <div className="sem-section-heading sem-heading-left">
-              <span>适合谁</span>
-              <h2 id="sem-fit-title">如果你能接触企业客户，就可能适合合作</h2>
-              <p>
-                你不一定懂 AI 技术，也不一定有技术团队。只要你能接触企业老板、业务负责人、培训客户、园区协会、门店商家或行业客户，就可以先从试点项目开始。
-              </p>
-            </div>
-            <div className="sem-partner-grid">
+        <section id="fit" className="institution-band" aria-label="适合合作方">
+          <div className="container institution-inner">
+            <p>适合合作方</p>
+            <div className="institution-list" aria-label="合作方类型">
               {partnerTypes.map((item) => (
-                <article key={item}>
-                  <span />
-                  <strong>{item}</strong>
-                </article>
+                <span key={item}>{item}</span>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="sem-section sem-section-support" aria-labelledby="sem-support-title">
-          <div className="sem-container">
-            <div className="sem-section-heading">
-              <span>响指提供什么</span>
-              <h2 id="sem-support-title">让合作方能对外沟通、演示、报价和交付</h2>
+        <section className="intro-band" aria-labelledby="diagnosis-title">
+          <div className="container intro-grid">
+            <div className="section-kicker">
+              <span>为什么需要一起做</span>
+              <h2 id="diagnosis-title">现在缺的不是客户兴趣，而是把兴趣变成项目的能力</h2>
             </div>
-            <div className="sem-support-grid">
-              {supportItems.map((item, index) => (
+            <div className="diagnosis-list">
+              {diagnoses.map((item) => (
                 <article key={item[0]}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <h3>{item[0]}</h3>
-                  <p>{item[1]}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="sem-projects" className="sem-section sem-section-projects" aria-labelledby="sem-projects-title">
-          <div className="sem-container">
-            <div className="sem-section-heading sem-heading-left">
-              <span>可合作项目</span>
-              <h2 id="sem-projects-title">先从一个小场景开始，让客户看到结果</h2>
-              <p>
-                企业 AI 服务不一定一开始就做大系统。更适合先选一个明确场景，快速验证，再扩展到知识库、智能体、流程优化和部署。
-              </p>
-            </div>
-            <div className="sem-project-grid">
-              {projectCards.map((item) => (
-                <article key={item[0]}>
-                  <h3>{item[0]}</h3>
-                  <p>{item[1]}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="sem-section sem-section-modes" aria-labelledby="sem-modes-title">
-          <div className="sem-container sem-modes-grid">
-            <div className="sem-section-heading sem-heading-left">
-              <span>合作方式</span>
-              <h2 id="sem-modes-title">根据你的资源和能力，选择合适的合作深度</h2>
-            </div>
-            <div className="sem-mode-list">
-              {cooperationModes.map((item, index) => (
-                <article key={item[0]}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <span>{item[0]}</span>
                   <div>
-                    <h3>{item[0]}</h3>
-                    <p>{item[1]}</p>
+                    <h3>{item[1]}</h3>
+                    <p>{item[2]}</p>
                   </div>
                 </article>
               ))}
@@ -245,28 +242,147 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="sem-contact" className="sem-contact-section" aria-labelledby="sem-contact-title">
-          <div className="sem-container sem-contact-grid">
-            <div className="sem-contact-copy">
-              <span>获取合作资料</span>
-              <h2 id="sem-contact-title">想判断自己是否适合做企业 AI 服务合作？</h2>
+        <section id="support" className="section section-light" aria-labelledby="support-title">
+          <div className="container">
+            <div className="section-heading split-heading">
+              <h2 id="support-title">响指提供平台、售前和交付能力</h2>
               <p>
-                扫码添加企业微信，备注“AI 企业服务合作”。我们会先看你的客户资源、行业方向和合作方式，再判断适合从哪类试点项目切入。
+                合作不是给你一个账号让你自己摸索，而是把客户沟通、场景判断、Demo 演示和交付路径一起准备好。
               </p>
-              <ul>
-                <li>企业 AI 服务合作方式</li>
-                <li>可包装的 AI 项目类型</li>
-                <li>客户沟通话术和试点路径</li>
-              </ul>
             </div>
-            <div className="sem-qr-card">
+
+            <div className="pilot-layout">
+              <div className="pilot-list">
+                {supportItems.map((item) => (
+                  <article key={item.role}>
+                    <span className="pilot-role">{item.role}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.body}</p>
+                    <ul>
+                      {item.items.map((child) => (
+                        <li key={child}>{child}</li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+
+              <figure className="pilot-visual">
+                <div className="visual-caption">
+                  <span>联合售前材料</span>
+                  <strong>把客户一句话需求，整理成可演示、可报价、可交付的试点方案</strong>
+                </div>
+                <img src="/assets/haisnap-task-console.png" alt="响指 AI 任务执行和交付过程示意" width="2078" height="1144" />
+                <figcaption>客户关系在你手里，方案、Demo 和交付路径由响指一起补齐。</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section id="projects" className="section value-section" aria-labelledby="projects-title">
+          <div className="container">
+            <div className="section-heading">
+              <p className="eyebrow eyebrow-dark">可合作项目</p>
+              <h2 id="projects-title">先从一个小场景切入，再扩展成持续服务</h2>
+            </div>
+            <div className="value-lines">
+              {projectLines.map((item) => (
+                <article key={item.number}>
+                  <div className={`value-label ${item.color}`}>
+                    <span>{item.number}</span>
+                    <strong>{item.label}</strong>
+                  </div>
+                  <div className="value-copy">
+                    <h3>{item.title}</h3>
+                    <p>{item.body}</p>
+                  </div>
+                  <ul>
+                    {item.items.map((child) => (
+                      <li key={child}>{child}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section execution-section" aria-labelledby="process-title">
+          <div className="container">
+            <div className="section-heading split-heading">
+              <h2 id="process-title">从客户线索到试点交付，流程要短</h2>
+              <p>
+                百度 SEM 进来的用户需要快速判断能不能合作。我们把合作流程压成六步，先验证客户需求，再逐步放大。
+              </p>
+            </div>
+            <ol className="execution-flow">
+              {executionSteps.map((item) => (
+                <li key={item[0]}>
+                  <span>{item[0]}</span>
+                  <strong>{item[1]}</strong>
+                  <small>{item[2]}</small>
+                </li>
+              ))}
+            </ol>
+
+            <div className="platform-grid">
+              {cooperationCards.map((item, index) => (
+                <article key={item[0]}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <h3>{item[0]}</h3>
+                  <p>{item[1]}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section faq-section" aria-labelledby="faq-title">
+          <div className="container faq-grid">
+            <div className="section-heading faq-heading">
+              <h2 id="faq-title">常见问题</h2>
+            </div>
+            <div className="faq-list">
+              {faqs.map((item, index) => (
+                <details key={item[0]} open={index === 0}>
+                  <summary>{item[0]}</summary>
+                  <p>{item[1]}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" className="contact-section" aria-labelledby="contact-title">
+          <div className="container contact-inner">
+            <div className="contact-copy">
+              <h2 id="contact-title">想判断你的客户资源适合怎么切入 AI 服务？</h2>
+              <p>
+                扫码添加企业微信，备注“AI 企业服务合作”。我们会先看你的行业资源、客户类型和合作方式，再判断适合从哪个试点项目开始。
+              </p>
+              <div className="contact-actions">
+                <a className="button button-primary" href="#contact">
+                  添加企业微信
+                </a>
+                <a className="button button-secondary" href="https://haisnap.ai/zh">
+                  访问响指主站
+                </a>
+              </div>
+            </div>
+            <figure className="contact-qr">
               <img src="/assets/enterprise-contact.png" alt="响指 AI 企业微信二维码" width="396" height="396" />
-              <strong>添加企业微信</strong>
-              <p>备注：AI 企业服务合作</p>
-            </div>
+              <figcaption>添加企业微信，备注：AI 企业服务合作</figcaption>
+            </figure>
           </div>
         </section>
       </main>
+
+      <footer className="site-footer">
+        <div className="container footer-inner">
+          <span>© 2026 HaiSnap AI. 企业 AI 服务合作</span>
+          <a href="https://haisnap.ai/zh">haisnap.ai</a>
+        </div>
+      </footer>
     </>
   );
 }
