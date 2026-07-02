@@ -148,13 +148,15 @@ jobs:
 
           set +e
           upload_output="$(
-            ssh -i ~/.ssh/volcengine_ecs_key \
-              -p "$ECS_PORT_RESOLVED" \
+            timeout 180s scp -O \
+              -i ~/.ssh/volcengine_ecs_key \
+              -P "$ECS_PORT_RESOLVED" \
               -o BatchMode=yes \
               -o ConnectTimeout=20 \
-              "$ECS_USER_RESOLVED@$ECS_HOST_RESOLVED" \
-              "cat > /tmp/haisnap-b-ssr.tar.gz" \
-              < haisnap-b-ssr.tar.gz 2>&1
+              -o ServerAliveInterval=15 \
+              -o ServerAliveCountMax=4 \
+              haisnap-b-ssr.tar.gz \
+              "$ECS_USER_RESOLVED@$ECS_HOST_RESOLVED:/tmp/haisnap-b-ssr.tar.gz" 2>&1
           )"
           upload_status=$?
           set -e
