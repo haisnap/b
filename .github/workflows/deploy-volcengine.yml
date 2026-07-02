@@ -207,6 +207,7 @@ jobs:
             --endpoint-url "$VOLCENGINE_TOS_ENDPOINT_RESOLVED" \
             --delete \
             --cache-control "public,max-age=300" \
+            --content-disposition "inline" \
             "${acl_args[@]}" 2>&1
           )"
           sync_status=$?
