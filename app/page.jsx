@@ -209,21 +209,20 @@ export default function HomePage() {
 
         <section id="support" className="section section-light" aria-labelledby="support-title">
           <div className="container">
-            <div className="section-heading split-heading">
-              <h2 id="support-title">响指提供平台、售前和交付能力</h2>
-              <p>
-                合作不是给你一个账号让你自己摸索，而是把客户沟通、场景判断、Demo 演示和交付路径一起准备好。
-              </p>
-            </div>
-
             <div className="pilot-layout">
-              <div className="pilot-list">
-                {supportItems.map((item) => (
-                  <article key={item.title}>
-                    <h3>{item.title}</h3>
-                    <p>{item.body}</p>
-                  </article>
-                ))}
+              <div className="pilot-copy">
+                <div className="section-heading support-heading">
+                  <h2 id="support-title">响指提供平台、售前和交付能力</h2>
+                </div>
+
+                <div className="pilot-list">
+                  {supportItems.map((item) => (
+                    <article key={item.title}>
+                      <h3>{item.title}</h3>
+                      <p>{item.body}</p>
+                    </article>
+                  ))}
+                </div>
               </div>
 
               <figure className="pilot-visual">

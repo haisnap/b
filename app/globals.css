@@ -550,11 +550,23 @@ select {
   line-height: 1.8;
 }
 
+.support-heading {
+  max-width: 660px;
+  margin-right: 0;
+  margin-bottom: 40px;
+  margin-left: 0;
+  text-align: left;
+}
+
 .pilot-layout {
   display: grid;
   grid-template-columns: minmax(360px, 0.78fr) minmax(0, 1.22fr);
   align-items: start;
   gap: 54px;
+}
+
+.pilot-copy {
+  min-width: 0;
 }
 
 .pilot-list {
