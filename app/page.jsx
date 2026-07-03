@@ -13,18 +13,15 @@ const diagnoses = [
 const supportItems = [
   {
     title: "先让客户看到一个能跑的结果",
-    body: "用响指的 AI 工作台、知识库、智能体和应用生成能力，快速做出演示原型。",
-    items: ["业务 Demo", "知识库问答", "智能体流程"]
+    body: "用响指的 AI 工作台、知识库、智能体和应用生成能力，快速做出演示原型。"
   },
   {
     title: "把模糊需求整理成可沟通项目",
-    body: "协助拆解客户场景、准备沟通提纲、试点方案、报价范围和交付边界。",
-    items: ["需求诊断", "方案包装", "报价边界"]
+    body: "协助拆解客户场景、准备沟通提纲、试点方案、报价范围和交付边界。"
   },
   {
     title: "从试点项目走到持续服务",
-    body: "参与需求确认、Demo 调整、培训交付、上线复盘和后续扩展建议。",
-    items: ["试点交付", "客户培训", "运营复盘"]
+    body: "参与需求确认、Demo 调整、培训交付、上线复盘和后续扩展建议。"
   }
 ];
 
@@ -58,7 +55,7 @@ const projectLines = [
 const faqs = [
   ["这是不是卖加盟？", "不是。这个页面面向有企业客户资源的合作方，先判断客户需求和可合作方式，不收所谓加盟费。"],
   ["我不懂技术可以合作吗？", "可以。你负责客户关系、行业理解和业务场景，响指提供平台、售前、Demo 和交付支持。"],
-  ["第一单适合做什么？", "优先从边界清晰的小场景开始，例如企业知识库、销售助手、AI 培训、业务 Demo 或 SOP 流程优化。"]
+  ["第一单适合做什么？", "优先从边界清晰的小场景开始，例如企业知识库、销售助手、AI 培训或 SOP 流程优化。"]
 ];
 
 const structuredData = {
@@ -225,11 +222,6 @@ export default function HomePage() {
                   <article key={item.title}>
                     <h3>{item.title}</h3>
                     <p>{item.body}</p>
-                    <ul>
-                      {item.items.map((child) => (
-                        <li key={child}>{child}</li>
-                      ))}
-                    </ul>
                   </article>
                 ))}
               </div>
@@ -239,7 +231,6 @@ export default function HomePage() {
                   <strong>把客户一句话需求，整理成可演示、可报价、可交付的试点方案</strong>
                 </div>
                 <img src="/assets/haisnap-task-console.png" alt="响指 AI 任务执行和交付过程示意" width="2078" height="1144" />
-                <figcaption>客户关系在你手里，方案、Demo 和交付路径由响指一起补齐。</figcaption>
               </figure>
             </div>
           </div>
