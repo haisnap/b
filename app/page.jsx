@@ -12,19 +12,16 @@ const diagnoses = [
 
 const supportItems = [
   {
-    role: "平台与 Demo",
     title: "先让客户看到一个能跑的结果",
     body: "用响指的 AI 工作台、知识库、智能体和应用生成能力，快速做出演示原型。",
     items: ["业务 Demo", "知识库问答", "智能体流程"]
   },
   {
-    role: "售前与方案",
     title: "把模糊需求整理成可沟通项目",
     body: "协助拆解客户场景、准备沟通提纲、试点方案、报价范围和交付边界。",
     items: ["需求诊断", "方案包装", "报价边界"]
   },
   {
-    role: "交付与复盘",
     title: "从试点项目走到持续服务",
     body: "参与需求确认、Demo 调整、培训交付、上线复盘和后续扩展建议。",
     items: ["试点交付", "客户培训", "运营复盘"]
@@ -186,7 +183,6 @@ export default function HomePage() {
 
         <section id="fit" className="institution-band" aria-label="适合合作方">
           <div className="container institution-inner">
-            <p>适合合作方</p>
             <div className="institution-list" aria-label="合作方类型">
               {partnerTypes.map((item) => (
                 <span key={item}>{item}</span>
@@ -198,7 +194,6 @@ export default function HomePage() {
         <section className="intro-band" aria-labelledby="diagnosis-title">
           <div className="container intro-grid">
             <div className="section-kicker">
-              <span>为什么需要一起做</span>
               <h2 id="diagnosis-title">现在缺的不是客户兴趣，而是把兴趣变成项目的能力</h2>
             </div>
             <div className="diagnosis-list">
@@ -227,8 +222,7 @@ export default function HomePage() {
             <div className="pilot-layout">
               <div className="pilot-list">
                 {supportItems.map((item) => (
-                  <article key={item.role}>
-                    <span className="pilot-role">{item.role}</span>
+                  <article key={item.title}>
                     <h3>{item.title}</h3>
                     <p>{item.body}</p>
                     <ul>
@@ -242,7 +236,6 @@ export default function HomePage() {
 
               <figure className="pilot-visual">
                 <div className="visual-caption">
-                  <span>联合售前材料</span>
                   <strong>把客户一句话需求，整理成可演示、可报价、可交付的试点方案</strong>
                 </div>
                 <img src="/assets/haisnap-task-console.png" alt="响指 AI 任务执行和交付过程示意" width="2078" height="1144" />
@@ -255,7 +248,6 @@ export default function HomePage() {
         <section id="projects" className="section value-section" aria-labelledby="projects-title">
           <div className="container">
             <div className="section-heading">
-              <p className="eyebrow eyebrow-dark">可合作项目</p>
               <h2 id="projects-title">先从一个小场景切入，再扩展成持续服务</h2>
             </div>
             <div className="value-lines">

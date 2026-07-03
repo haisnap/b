@@ -1194,6 +1194,10 @@ select {
   background: var(--dark);
 }
 
+.home-page .institution-inner {
+  grid-template-columns: 1fr;
+}
+
 .home-page .intro-band,
 .home-page .section-light,
 .home-page .value-section,
