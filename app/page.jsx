@@ -58,21 +58,6 @@ const projectLines = [
   }
 ];
 
-const executionSteps = [
-  ["01", "判断资源", "确认你能触达的客户类型"],
-  ["02", "拆解需求", "把客户想法拆成试点场景"],
-  ["03", "准备演示", "生成 Demo、方案和话术"],
-  ["04", "联合跟进", "一起完成客户沟通与报价"],
-  ["05", "试点交付", "交付结果并复盘扩展方向"],
-  ["06", "持续合作", "沉淀行业项目和客户案例"]
-];
-
-const cooperationCards = [
-  ["推荐客户", "你提供客户线索，响指协助判断需求、准备材料和后续跟进。"],
-  ["联合售前", "你负责客户关系，响指提供方案、Demo、报价边界和技术解释。"],
-  ["渠道合作", "围绕行业、区域或客群，持续包装企业 AI 服务项目。"]
-];
-
 const faqs = [
   ["这是不是卖加盟？", "不是。这个页面面向有企业客户资源的合作方，先判断客户需求和可合作方式，不收所谓加盟费。"],
   ["我不懂技术可以合作吗？", "可以。你负责客户关系、行业理解和业务场景，响指提供平台、售前、Demo 和交付支持。"],
@@ -147,16 +132,10 @@ export default function HomePage() {
         跳到主要内容
       </a>
 
-      <header className="site-header" aria-label="企业 AI 服务合作导航">
+      <header className="site-header site-header-minimal" aria-label="企业 AI 服务合作导航">
         <a className="brand" href="/" aria-label="响指 AI 首页">
           <img src="/assets/haisnap-header-logo.webp" alt="HaiSnap" width="120" height="60" fetchPriority="high" />
         </a>
-        <nav className="site-nav" aria-label="页面导航">
-          <a href="#fit">适合谁</a>
-          <a href="#support">响指提供什么</a>
-          <a href="#projects">项目类型</a>
-          <a href="#contact">咨询合作</a>
-        </nav>
         <a className="header-cta" href="#contact">
           加企微咨询
         </a>
@@ -301,36 +280,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="section execution-section" aria-labelledby="process-title">
-          <div className="container">
-            <div className="section-heading split-heading">
-              <h2 id="process-title">从客户线索到试点交付，流程要短</h2>
-              <p>
-                百度 SEM 进来的用户需要快速判断能不能合作。我们把合作流程压成六步，先验证客户需求，再逐步放大。
-              </p>
-            </div>
-            <ol className="execution-flow">
-              {executionSteps.map((item) => (
-                <li key={item[0]}>
-                  <span>{item[0]}</span>
-                  <strong>{item[1]}</strong>
-                  <small>{item[2]}</small>
-                </li>
-              ))}
-            </ol>
-
-            <div className="platform-grid">
-              {cooperationCards.map((item, index) => (
-                <article key={item[0]}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <h3>{item[0]}</h3>
-                  <p>{item[1]}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section className="section faq-section" aria-labelledby="faq-title">
           <div className="container faq-grid">
             <div className="section-heading faq-heading">
@@ -370,7 +319,6 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-
     </>
   );
 }
