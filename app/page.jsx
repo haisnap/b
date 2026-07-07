@@ -207,6 +207,27 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section className="section fde-section" aria-labelledby="fde-title">
+          <div className="container fde-layout">
+            <div className="fde-copy">
+              <h2 id="fde-title">FDE，把客户需求带到真实业务现场</h2>
+              <p>
+                深入客户一线，听需求、拆问题、搭原型、推上线，再根据真实反馈持续迭代。
+              </p>
+            </div>
+
+            <figure className="fde-visual">
+              <img
+                src="/assets/fde-guide.jpg"
+                alt="FDE 从客户业务现场连接产品和工程团队，并完成调研、方案、验证与交付的图解"
+                width="1080"
+                height="1440"
+                loading="lazy"
+              />
+            </figure>
+          </div>
+        </section>
+
         <section id="support" className="section section-light" aria-labelledby="support-title">
           <div className="container">
             <div className="pilot-layout">
