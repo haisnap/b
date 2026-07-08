@@ -163,10 +163,10 @@ export default function HomePage() {
                 <strong>客户说想做 AI，但不知道先从培训、知识库还是业务流程开始</strong>
               </div>
               <img
-                src="/assets/haisnap-prompt-console.png"
-                alt="响指 AI 工作台把客户需求整理成方案和可执行任务"
-                width="1818"
-                height="1000"
+                src="/assets/fde-ai-team.jpg"
+                alt="FDE 团队利用 AI 工具协同完成产品、开发、设计和运营工作"
+                width="1350"
+                height="1080"
                 fetchPriority="high"
               />
               <div className="product-foot">
@@ -250,7 +250,13 @@ export default function HomePage() {
                 <div className="visual-caption">
                   <strong>把客户一句话需求，整理成可演示、可报价、可交付的试点方案</strong>
                 </div>
-                <img src="/assets/haisnap-task-console.png" alt="响指 AI 任务执行和交付过程示意" width="2078" height="1144" />
+                <img
+                  src="/assets/fde-role.jpg"
+                  alt="FDE 结合产品、架构和咨询能力解决客户问题的图解"
+                  width="896"
+                  height="1200"
+                  loading="lazy"
+                />
               </figure>
             </div>
           </div>
