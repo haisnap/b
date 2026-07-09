@@ -1803,6 +1803,11 @@ select {
   contain-intrinsic-size: auto;
 }
 
+.agent-platform-list {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
 .agent-hero .hero-inner {
   grid-template-columns: minmax(0, 0.88fr) minmax(560px, 1.12fr);
   gap: 50px;

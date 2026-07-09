@@ -66,20 +66,6 @@ const scenarios = [
   }
 ];
 
-const deploymentRows = [
-  ["API 接入", "连接现有应用与数据服务", "适合先从单个流程快速验证 Agent 价值"],
-  ["专属环境", "隔离运行资源与企业配置", "适合对权限、稳定性和管理有更高要求的团队"],
-  ["私有化部署", "在客户指定环境部署", "适合对数据安全、网络边界和系统集成有严格要求的组织"]
-];
-
-const faqs = [
-  ["AI Agent 和普通聊天机器人有什么区别？", "普通聊天机器人主要回答问题；AI Agent 会围绕目标调用知识、工具、Skill 和业务系统，并按照工作流推进任务、生成成果。"],
-  ["Agent 工作流需要重新改造现有业务系统吗？", "不需要先替换现有系统。响指位于员工与业务能力之间，可通过授权接口连接知识库、CRM、ERP、工单或其他系统，从边界清晰的任务开始验证。"],
-  ["没有技术团队也能搭建企业 Agent 吗？", "可以先由业务人员描述目标和流程，再由响指团队协助拆解场景、配置知识与能力、搭建 Demo，并逐步沉淀为可维护的 Agent 工作流。"],
-  ["如何控制 Agent 的结果质量和业务风险？", "通过权限隔离、输入输出记录、效果评测、版本管理、异常处置和人在回路机制，让关键决策保留人工复核，执行过程可追溯。"],
-  ["适合从什么场景开始试点？", "优先选择资料多、规则相对清晰、重复频率高且结果容易验收的任务，例如销售方案、知识助手、会议跟进、运营周报、客服质检或项目复盘。"]
-];
-
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
@@ -162,24 +148,12 @@ export default function AgentPage() {
 
             <div className="hero-product" aria-label="响指 AI Agent 工作流界面示意">
               <img
-                src="/assets/haisnap-task-console.png"
-                alt="响指 AI Agent 工作流任务执行界面"
-                width="2078"
-                height="1144"
+                src="/assets/agent-workflow-hero.png"
+                alt="企业团队协同设计 AI Agent 工作流"
+                width="1619"
+                height="971"
                 fetchPriority="high"
               />
-            </div>
-          </div>
-        </section>
-
-        <section className="institution-band agent-intent-band" aria-label="Agent 工作流适用团队">
-          <div className="container institution-inner">
-            <div className="institution-list">
-              <span>销售团队</span>
-              <span>客户服务</span>
-              <span>运营团队</span>
-              <span>项目管理</span>
-              <span>知识管理</span>
             </div>
           </div>
         </section>
@@ -213,10 +187,10 @@ export default function AgentPage() {
             </div>
             <figure className="fde-visual">
               <img
-                src="/assets/haisnap-prompt-console.png"
-                alt="响指 AI 工作流配置与运行界面"
-                width="1818"
-                height="1000"
+                src="/assets/agent-workflow-chain.png"
+                alt="企业 AI Agent 工作流从需求到结果的流程图"
+              width="1774"
+              height="887"
                 loading="lazy"
               />
             </figure>
@@ -225,35 +199,21 @@ export default function AgentPage() {
 
         <section id="platform" className="section section-light" aria-labelledby="platform-title">
           <div className="container">
-            <div className="pilot-layout">
-              <div className="pilot-copy">
-                <div className="section-heading support-heading">
-                  <h2 id="platform-title">把 Agent 的构建、使用和管理放在同一套体系里</h2>
-                </div>
-                <div className="pilot-list">
-                  {platformCapabilities.map((item) => (
-                    <article key={item.number}>
-                      <h3>{item.title}</h3>
-                      <p>{item.body}</p>
-                      <ul>
-                        {item.items.map((child) => (
-                          <li key={child}>{child}</li>
-                        ))}
-                      </ul>
-                    </article>
-                  ))}
-                </div>
-              </div>
-
-              <figure className="pilot-visual">
-                <img
-                  src="/assets/haisnap-task-console.png"
-                  alt="响指 AI Agent 工作流任务台"
-                  width="2078"
-                  height="1144"
-                  loading="lazy"
-                />
-              </figure>
+            <div className="section-heading">
+              <h2 id="platform-title">把 Agent 的构建、使用和管理放在同一套体系里</h2>
+            </div>
+            <div className="pilot-list agent-platform-list">
+              {platformCapabilities.map((item) => (
+                <article key={item.number}>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                  <ul>
+                    {item.items.map((child) => (
+                      <li key={child}>{child}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
             </div>
           </div>
         </section>
@@ -280,65 +240,6 @@ export default function AgentPage() {
                     ))}
                   </ul>
                 </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="governance" className="section governance-section agent-governance-section" aria-labelledby="governance-title">
-          <div className="container">
-            <div className="governance-grid">
-              <div>
-                <p className="eyebrow">企业级安全与管控</p>
-                <h2 id="governance-title">让 Agent 在清晰边界内执行</h2>
-                <p className="governance-lead">
-                  以权限、数据、过程和人工控制为边界，让 Agent 调用什么、执行了什么、产生了什么结果都有记录可查。
-                </p>
-              </div>
-              <ul className="boundary-list">
-                <li>企业数据按授权范围调用</li>
-                <li>模型、知识与工具权限隔离</li>
-                <li>任务输入输出完整留痕</li>
-                <li>关键业务节点人工确认</li>
-                <li>Agent 与工作流版本管理</li>
-                <li>异常任务支持定位与重试</li>
-              </ul>
-            </div>
-
-            <div className="deployment-wrap">
-              <div className="section-heading split-heading deployment-heading">
-                <h2>按企业要求选择接入与部署方式</h2>
-                <p>从快速试点到生产级落地，结合数据安全、网络边界、系统集成和运维要求确定实施路径。</p>
-              </div>
-              <div className="deployment-table" role="table" aria-label="Agent 平台部署方式">
-                <div className="deployment-row deployment-head" role="row">
-                  <span role="columnheader">部署方式</span>
-                  <span role="columnheader">连接范围</span>
-                  <span role="columnheader">适用阶段</span>
-                </div>
-                {deploymentRows.map((row) => (
-                  <div className="deployment-row" role="row" key={row[0]}>
-                    <strong role="cell">{row[0]}</strong>
-                    <span role="cell">{row[1]}</span>
-                    <span role="cell">{row[2]}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="section faq-section" aria-labelledby="agent-faq-title">
-          <div className="container faq-grid">
-            <div className="section-heading faq-heading">
-              <h2 id="agent-faq-title">关于企业 AI Agent 工作流</h2>
-            </div>
-            <div className="faq-list">
-              {faqs.map((item, index) => (
-                <details key={item[0]} open={index === 0}>
-                  <summary>{item[0]}</summary>
-                  <p>{item[1]}</p>
-                </details>
               ))}
             </div>
           </div>
