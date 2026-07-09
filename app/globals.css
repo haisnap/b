@@ -1795,7 +1795,7 @@ select {
 }
 
 .agent-page {
-  background: var(--page);
+  background: var(--dark);
 }
 
 .agent-page .section {
