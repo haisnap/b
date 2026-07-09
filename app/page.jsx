@@ -1,3 +1,6 @@
+import ContactCTA from "./components/ContactCTA";
+import SiteHeader from "./components/SiteHeader";
+
 export const dynamic = "force-dynamic";
 
 const pageUrl = "https://b.haisnap.com/";
@@ -126,14 +129,13 @@ export default function HomePage() {
         跳到主要内容
       </a>
 
-      <header className="site-header site-header-minimal" aria-label="企业 AI 服务合作导航">
-        <a className="brand" href="/" aria-label="响指 AI 首页">
-          <img src="/assets/haisnap-header-logo.webp" alt="HaiSnap" width="120" height="60" fetchPriority="high" />
-        </a>
-        <a className="header-cta" href="#contact">
-          加企微咨询
-        </a>
-      </header>
+      <SiteHeader
+        ariaLabel="企业 AI 服务合作导航"
+        brandHref="/"
+        ctaHref="#contact"
+        ctaLabel="加企微咨询"
+        minimal
+      />
 
       <main id="main" className="home-page">
         <section className="hero home-hero" aria-labelledby="hero-title">
@@ -305,28 +307,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="contact" className="contact-section" aria-labelledby="contact-title">
-          <div className="container contact-inner">
-            <div className="contact-copy">
-              <h2 id="contact-title">想判断你的客户资源适合怎么切入 AI 服务？</h2>
-              <p>
-                扫码添加企业微信，备注“AI 企业服务合作”。我们会先看你的行业资源、客户类型和合作方式，再判断适合从哪个试点项目开始。
-              </p>
-              <div className="contact-actions">
-                <a className="button button-primary" href="#contact">
-                  添加企业微信
-                </a>
-                <a className="button button-secondary" href="https://haisnap.ai/zh">
-                  访问响指主站
-                </a>
-              </div>
-            </div>
-            <figure className="contact-qr">
-              <img src="/assets/enterprise-contact.png" alt="响指 AI 企业微信二维码" width="396" height="396" />
-              <figcaption>添加企业微信，备注：AI 企业服务合作</figcaption>
-            </figure>
-          </div>
-        </section>
+        <ContactCTA
+          title="想判断你的客户资源适合怎么切入 AI 服务？"
+          description="扫码添加企业微信，备注“AI 企业服务合作”。我们会先看你的行业资源、客户类型和合作方式，再判断适合从哪个试点项目开始。"
+          primaryLabel="添加企业微信"
+          caption="添加企业微信，备注：AI 企业服务合作"
+        />
       </main>
     </>
   );
