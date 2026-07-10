@@ -141,7 +141,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          timeout 300s scp -O \
+          timeout 1200s scp -O \
             -i ~/.ssh/volcengine_ecs_key \
             -P "$ECS_PORT_RESOLVED" \
             -o BatchMode=yes \
