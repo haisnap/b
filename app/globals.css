@@ -1808,6 +1808,20 @@ select {
   margin: 0 auto;
 }
 
+.data-analysis-page {
+  background: var(--dark);
+}
+
+.data-analysis-page .section {
+  content-visibility: visible;
+  contain-intrinsic-size: auto;
+}
+
+.data-analysis-platform-list {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
 .agent-hero .hero-inner {
   grid-template-columns: minmax(0, 0.88fr) minmax(560px, 1.12fr);
   gap: 50px;
