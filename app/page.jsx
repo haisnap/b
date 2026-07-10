@@ -156,14 +156,6 @@ export default function HomePage() {
             </div>
 
             <div className="hero-product" aria-label="响指企业 AI 服务合作工作台示意">
-              <div className="product-toolbar">
-                <span>HaiSnap Partner Desk</span>
-                <span className="product-status">方案准备中</span>
-              </div>
-              <div className="task-brief">
-                <span>客户需求</span>
-                <strong>客户说想做 AI，但不知道先从培训、知识库还是业务流程开始</strong>
-              </div>
               <img
                 src="/assets/fde-ai-team.jpg"
                 alt="FDE 团队利用 AI 工具协同完成产品、开发、设计和运营工作"
@@ -171,11 +163,6 @@ export default function HomePage() {
                 height="1080"
                 fetchPriority="high"
               />
-              <div className="product-foot">
-                <span>需求诊断</span>
-                <span>Demo 演示</span>
-                <span>试点交付</span>
-              </div>
             </div>
           </div>
         </section>
