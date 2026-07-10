@@ -60,6 +60,17 @@ jobs:
       - name: Build SSR app
         run: npm run build
 
+      - name: Pack standalone server
+        run: |
+          set -euo pipefail
+
+          rm -rf deploy
+          mkdir -p deploy/app/.next
+          cp -R .next/standalone/. deploy/app/
+          cp -R .next/static deploy/app/.next/static
+          cp -R public deploy/app/public
+          tar -czf haisnap-b-ssr.tar.gz -C deploy app
+
       - name: Resolve ECS deploy settings
         run: |
           set -euo pipefail
@@ -131,6 +142,20 @@ jobs:
           fi
           ssh-keyscan -p "$ECS_PORT_RESOLVED" -H "$ECS_HOST_RESOLVED" >> ~/.ssh/known_hosts
 
+      - name: Upload SSR package
+        run: |
+          set -euo pipefail
+
+          timeout 300s scp -O \
+            -i ~/.ssh/volcengine_ecs_key \
+            -P "$ECS_PORT_RESOLVED" \
+            -o BatchMode=yes \
+            -o ConnectTimeout=20 \
+            -o ServerAliveInterval=15 \
+            -o ServerAliveCountMax=4 \
+            haisnap-b-ssr.tar.gz \
+            "$ECS_USER_RESOLVED@$ECS_HOST_RESOLVED:/tmp/haisnap-b-$GITHUB_SHA.tar.gz"
+
       - name: Deploy SSR service on ECS
         run: |
           set -euo pipefail
@@ -145,7 +170,7 @@ jobs:
             "APP_NAME='$APP_NAME' DEPLOY_PATH='$ECS_DEPLOY_PATH_RESOLVED' APP_PORT='$ECS_APP_PORT_RESOLVED' GITHUB_SHA='$GITHUB_SHA' bash -s" <<'REMOTE'
           set -euo pipefail
 
-          for required_cmd in curl node npm tar; do
+          for required_cmd in node tar; do
             if ! command -v "$required_cmd" >/dev/null 2>&1; then
               echo "$required_cmd is required on the ECS server."
               exit 1
@@ -166,29 +191,13 @@ jobs:
           fi
 
           short_sha="${GITHUB_SHA:0:12}"
-          archive="/tmp/haisnap-b-${short_sha}.tar.gz"
+          archive="/tmp/haisnap-b-${GITHUB_SHA}.tar.gz"
           mkdir -p "$DEPLOY_PATH/releases"
           release="$DEPLOY_PATH/releases/$(date +%Y%m%d%H%M%S)-$short_sha"
           mkdir -p "$release"
 
-          curl -fL \
-            --retry 3 \
-            --connect-timeout 20 \
-            --max-time 300 \
-            "https://codeload.github.com/haisnap/b/tar.gz/$GITHUB_SHA" \
-            -o "$archive"
-
           tar -xzf "$archive" -C "$release" --strip-components=1
           rm -f "$archive"
-
-          cd "$release"
-          npm ci
-          npm run build
-
-          mkdir -p .next/standalone/.next
-          rm -rf .next/standalone/.next/static .next/standalone/public
-          cp -R .next/static .next/standalone/.next/static
-          cp -R public .next/standalone/public
 
           ln -sfn "$release" "$DEPLOY_PATH/current"
 
