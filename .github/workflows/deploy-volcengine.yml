@@ -60,16 +60,11 @@ jobs:
       - name: Build SSR app
         run: npm run build
 
-      - name: Pack standalone server
+      - name: Pack source archive
         run: |
           set -euo pipefail
 
-          rm -rf deploy
-          mkdir -p deploy/app/.next
-          cp -R .next/standalone/. deploy/app/
-          cp -R .next/static deploy/app/.next/static
-          cp -R public deploy/app/public
-          tar -czf haisnap-b-ssr.tar.gz -C deploy app
+          git archive --format=tar.gz --output=haisnap-b-source.tar.gz "$GITHUB_SHA"
 
       - name: Resolve ECS deploy settings
         run: |
@@ -142,7 +137,7 @@ jobs:
           fi
           ssh-keyscan -p "$ECS_PORT_RESOLVED" -H "$ECS_HOST_RESOLVED" >> ~/.ssh/known_hosts
 
-      - name: Upload SSR package
+      - name: Upload source archive
         run: |
           set -euo pipefail
 
@@ -153,7 +148,7 @@ jobs:
             -o ConnectTimeout=20 \
             -o ServerAliveInterval=15 \
             -o ServerAliveCountMax=4 \
-            haisnap-b-ssr.tar.gz \
+            haisnap-b-source.tar.gz \
             "$ECS_USER_RESOLVED@$ECS_HOST_RESOLVED:/tmp/haisnap-b-$GITHUB_SHA.tar.gz"
 
       - name: Deploy SSR service on ECS
@@ -170,7 +165,7 @@ jobs:
             "APP_NAME='$APP_NAME' DEPLOY_PATH='$ECS_DEPLOY_PATH_RESOLVED' APP_PORT='$ECS_APP_PORT_RESOLVED' GITHUB_SHA='$GITHUB_SHA' bash -s" <<'REMOTE'
           set -euo pipefail
 
-          for required_cmd in node tar; do
+          for required_cmd in node npm tar; do
             if ! command -v "$required_cmd" >/dev/null 2>&1; then
               echo "$required_cmd is required on the ECS server."
               exit 1
@@ -196,8 +191,17 @@ jobs:
           release="$DEPLOY_PATH/releases/$(date +%Y%m%d%H%M%S)-$short_sha"
           mkdir -p "$release"
 
-          tar -xzf "$archive" -C "$release" --strip-components=1
+          tar -xzf "$archive" -C "$release"
           rm -f "$archive"
+
+          cd "$release"
+          npm ci
+          npm run build
+
+          mkdir -p .next/standalone/.next
+          rm -rf .next/standalone/.next/static .next/standalone/public
+          cp -R .next/static .next/standalone/.next/static
+          cp -R public .next/standalone/public
 
           ln -sfn "$release" "$DEPLOY_PATH/current"
 
